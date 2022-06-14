@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.073c9b0a.css",
-    "main.js": "/static/js/main.6c5569e1.js",
-    "static/js/787.0c2cec77.chunk.js": "/static/js/787.0c2cec77.chunk.js",
-    "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
-    "index.html": "/index.html",
-    "main.073c9b0a.css.map": "/static/css/main.073c9b0a.css.map",
-    "main.6c5569e1.js.map": "/static/js/main.6c5569e1.js.map",
-    "787.0c2cec77.chunk.js.map": "/static/js/787.0c2cec77.chunk.js.map"
+    "main.css": "/SearchAlgorithmVisualizer/static/css/main.073c9b0a.css",
+    "main.js": "/SearchAlgorithmVisualizer/static/js/main.d3d5d2a5.js",
+    "static/js/787.0c2cec77.chunk.js": "/SearchAlgorithmVisualizer/static/js/787.0c2cec77.chunk.js",
+    "static/media/logo.svg": "/SearchAlgorithmVisualizer/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/SearchAlgorithmVisualizer/index.html",
+    "main.073c9b0a.css.map": "/SearchAlgorithmVisualizer/static/css/main.073c9b0a.css.map",
+    "main.d3d5d2a5.js.map": "/SearchAlgorithmVisualizer/static/js/main.d3d5d2a5.js.map",
+    "787.0c2cec77.chunk.js.map": "/SearchAlgorithmVisualizer/static/js/787.0c2cec77.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.6c5569e1.js"
+    "static/js/main.d3d5d2a5.js"
   ]
 }
