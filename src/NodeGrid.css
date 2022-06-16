@@ -1,0 +1,22 @@
+@import "./constants.css";
+
+.node-grid__wrapper {
+  display: flex;
+}
+
+.node-grid {
+  font-size: 0;
+  background-color: var(--secondary-color);
+  overflow: hidden;
+}
+
+.node-grid::before {
+  content: "";
+  width: calc(var(--hexagon-width) / 2 + var(--hexagon-spacing));
+  float: left;
+  height: 100%;
+  shape-outside: repeating-linear-gradient(
+    #0000 0 calc(var(--hexagon-alignment) - 0.1rem),
+    #000 0 var(--hexagon-alignment)
+  );
+}

@@ -1,0 +1,14 @@
+* {
+  /* Size Constants */
+  --hexagon-width: 1.5rem;
+  --hexagon-spacing: 0.02rem;
+  --hexagon-alignment: calc(
+    var(--hexagon-width) * 1.732 + 4 * var(--hexagon-spacing) - 1px
+  );
+
+  /* Color Constants */
+  --primary-color: #27323a;
+  --secondary-color: #435055;
+  --primary-accent-color: #29a19c;
+  --secondary-accent-color: #a3f7bf;
+}

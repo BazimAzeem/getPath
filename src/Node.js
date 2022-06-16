@@ -1,7 +1,8 @@
 import React from "react";
+import "./Node.css";
 
 const Node = () => {
-  return <h1>Node</h1>;
+  return <div className="node"></div>;
 };
 
 export default Node;
