@@ -27,13 +27,18 @@ const NodeGrid = () => {
 export default NodeGrid;
 
 function getNodeGridDimensions() {
-  let screenWidth = window.screen.availWidth;
-  console.log("screenWidth: " + screenWidth);
-  let screenHeight = window.screen.availHeight;
-  console.log("screenHeight: " + screenHeight);
+  // Crating a temp node to find its width to calculate rows and cols
+  let tempNode = document.createElement("div");
+  tempNode.classList.add("node");
+  document.body.appendChild(tempNode);
+  let nodeWidth = tempNode.offsetWidth;
+  tempNode.remove();
 
-  let rows = 20;
-  let cols = 50;
+  let screenWidth = window.screen.availWidth;
+  let screenHeight = window.screen.availHeight;
+
+  let rows = screenHeight / nodeWidth + 1;
+  let cols = screenWidth / nodeWidth;
 
   return [rows, cols];
 }
