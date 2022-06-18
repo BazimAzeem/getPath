@@ -10,3 +10,51 @@
   margin-bottom: calc(var(--hexagon-spacing) - var(--hexagon-width) * 0.2886);
   background-color: var(--primary-color);
 }
+
+.node-is-start {
+  background-color: green;
+}
+
+.node-is-target {
+  background-color: red;
+}
+
+.node-is-visited {
+  background-color: yellow;
+}
+
+.node-is-wall {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: isWallNodeAnimation;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes isWallNodeAnimation {
+  40% {
+    transform: scale(0);
+    background-color: var(--primary-color);
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: var(--primary-light-color);
+  }
+
+  90% {
+    transform: scale(1.075);
+    background-color: var(--primary-light-color);
+  }
+
+  100% {
+    transform: scale(1.0625);
+    background-color: var(--primary-light-color);
+  }
+}

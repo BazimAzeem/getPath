@@ -2,6 +2,8 @@
 
 .node-grid__wrapper {
   display: flex;
+  position: fixed;
+  bottom: 0;
 }
 
 .node-grid {

@@ -1,7 +1,7 @@
 :root {
   /* Size Constants */
   --hexagon-width: 1.5rem;
-  --hexagon-spacing: 0.02rem;
+  --hexagon-spacing: 0.0175rem;
   --hexagon-alignment: calc(
     var(--hexagon-width) * 1.732 + 4 * var(--hexagon-spacing) - 1px
   );
@@ -11,4 +11,5 @@
   --secondary-color: #435055;
   --primary-accent-color: #29a19c;
   --secondary-accent-color: #a3f7bf;
+  --primary-light-color: #d1ecff;
 }
