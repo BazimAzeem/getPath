@@ -7,9 +7,11 @@
   );
 
   /* Color Constants */
-  --primary-color: #27323a;
-  --secondary-color: #435055;
-  --primary-accent-color: #29a19c;
+  --primary-color: #1f282f;
+  --secondary-color: #364145;
+  --primary-accent-color: #1b716f;
   --secondary-accent-color: #a3f7bf;
+  --tertiary-accent-color: #fff41c;
+  --quaternary-accent-color: #e9f7a3;
   --primary-light-color: #d1ecff;
 }

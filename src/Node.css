@@ -19,10 +19,6 @@
   background-color: red;
 }
 
-.node-is-visited {
-  background-color: yellow;
-}
-
 .node-is-wall {
   background-position: center;
   background-repeat: no-repeat;
@@ -38,9 +34,9 @@
 }
 
 @keyframes isWallNodeAnimation {
-  40% {
+  25% {
     transform: scale(0);
-    background-color: var(--primary-color);
+    background-color: initial;
     border-radius: 100%;
   }
 
@@ -48,7 +44,7 @@
     background-color: var(--primary-light-color);
   }
 
-  90% {
+  75% {
     transform: scale(1.075);
     background-color: var(--primary-light-color);
   }
@@ -56,5 +52,77 @@
   100% {
     transform: scale(1.0625);
     background-color: var(--primary-light-color);
+  }
+}
+
+.node-is-visited {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: isVisitedNodeAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes isVisitedNodeAnimation {
+  25% {
+    transform: scale(0);
+    background-color: initial;
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: var(--secondary-accent-color);
+  }
+
+  75% {
+    transform: scale(1.075);
+    background-color: var(--secondary-accent-color);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: var(--primary-accent-color);
+  }
+}
+
+.node-is-path {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: isPathNodeAnimation;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes isPathNodeAnimation {
+  25% {
+    transform: scale(0);
+    background-color: initial;
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: var(--quaternary-accent-color);
+  }
+
+  75% {
+    transform: scale(1.075);
+    background-color: var(--quaternary-accent-color);
+  }
+
+  100% {
+    transform: scale(1.0625);
+    background-color: var(--tertiary-accent-color);
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Navbar, Nav, Button } from "react-bootstrap";
-import { visualizeSearch } from "./NodeGrid";
+import { visualizeSearch, visualizePath } from "./NodeGrid";
 import { djikstra } from "./search algorithms/djikstra";
 
 const NavBar = () => {
@@ -11,8 +11,9 @@ const NavBar = () => {
         <Nav>
           <Nav.Item>
             <Button
-              onClick={() => {
-                visualizeSearch(djikstra);
+              onClick={async () => {
+                var targetNodeRef = await visualizeSearch(djikstra);
+                var pathNodeRefs = await visualizePath(targetNodeRef);
               }}
             >
               Visualize
