@@ -2,21 +2,27 @@ import React from "react";
 import "./Node.css";
 
 // Global
-var mousePressed = false;
+var isMakingWall = false;
+var isMovingStart = false;
+var isMovingTarget = false;
 window.addEventListener("mouseup", () => {
-  mousePressed = false;
+  isMakingWall = false;
+  isMovingStart = false;
+  isMovingTarget = false;
 });
 
 class Node extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isVisited: this.props.isVisited,
+      isVisited: false,
       isWall: false,
       isPath: false,
       isStart: this.props.isStart,
       isTarget: this.props.isTarget,
     };
+    this.defaultState = this.state;
+
     this.isVisited = false;
     this.weight = 1;
     this.distance = Infinity;
@@ -24,29 +30,56 @@ class Node extends React.Component {
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+  }
+
+  resetToDefault() {
+    this.isVisited = false;
+    this.weight = 1;
+    this.distance = Infinity;
+    this.predecessor = null;
+    this.setState(this.defaultState);
   }
 
   makeWall() {
     this.setState({ isWall: !this.state.isWall });
-    this.weight = Infinity;
+    this.weight = this.weight == Infinity ? 1 : Infinity;
   }
 
   handleMouseDown() {
-    if (!(this.state.isStart || this.state.isTarget)) {
+    if (this.state.isStart) {
+      isMovingStart = true;
+    } else if (this.state.isTarget) {
+      isMovingTarget = true;
+    } else {
       this.makeWall();
-      mousePressed = true;
+      isMakingWall = true;
     }
   }
 
   handleMouseEnter() {
-    if (mousePressed && !(this.state.isStart || this.state.isTarget)) {
+    if (isMovingStart) {
+      this.setState({ isStart: true, isWall: false });
+    } else if (isMovingTarget) {
+      this.setState({ isTarget: true, isWall: false });
+    } else if (isMakingWall && !(this.state.isStart || this.state.isTarget)) {
       this.makeWall();
     }
   }
 
+  handleMouseLeave() {
+    if (isMovingStart) {
+      this.setState({ isStart: false });
+    } else if (isMovingTarget) {
+      this.setState({ isTarget: false });
+    }
+  }
+
   handleMouseUp() {
-    mousePressed = false;
+    isMakingWall = false;
+    isMovingStart = false;
+    isMovingTarget = false;
   }
 
   render() {
@@ -62,9 +95,10 @@ class Node extends React.Component {
         }
         onMouseDown={this.handleMouseDown}
         onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
         onMouseUp={this.handleMouseUp}
         onClick={() => {
-          console.log(this.props, this.state);
+          console.log(this.isVisited);
         }}
       ></div>
     );

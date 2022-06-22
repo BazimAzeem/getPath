@@ -13,7 +13,7 @@ export function djikstra(nodeRefGrid) {
   var visitedNodeRefs = [];
   while (pq.nodeRefs.length > 0) {
     var minNodeRef = pq.extractMinNodeRef();
-    minNodeRef.current.visited = true;
+    minNodeRef.current.isVisited = true;
     visitedNodeRefs.push(minNodeRef);
 
     if (
@@ -25,7 +25,7 @@ export function djikstra(nodeRefGrid) {
     var minNodeRefChildren = getNodeRefChildren(minNodeRef, nodeRefGrid);
     for (const minNodeRefChild of minNodeRefChildren) {
       if (
-        !minNodeRefChild.current.visited &&
+        !minNodeRefChild.current.isVisited &&
         minNodeRefChild.current.distance >
           minNodeRef.current.distance + minNodeRefChild.current.weight
       ) {

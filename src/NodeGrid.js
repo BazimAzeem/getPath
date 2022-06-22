@@ -4,7 +4,7 @@ import "./NodeGrid.css";
 import djikstra from "./search algorithms/djikstra";
 
 var [rows, cols] = getNodeGridDimensions();
-var nodeRefGrid = getNodeRefGrid(rows, cols);
+export var nodeRefGrid = getNodeRefGrid(rows, cols);
 var nodeGrid = getNodeGrid(rows, cols, nodeRefGrid);
 
 const NodeGrid = () => {
@@ -37,7 +37,7 @@ function getNodeGridDimensions() {
   let screenWidth = window.screen.availWidth;
   let screenHeight = window.screen.availHeight;
 
-  let rows = parseInt(screenHeight / nodeWidth);
+  let rows = parseInt(screenHeight / nodeWidth - 1);
   let cols = parseInt(screenWidth / nodeWidth);
 
   return [rows, cols];
@@ -95,7 +95,7 @@ function getNode(row, col, rows, cols, nodeRef) {
   return node;
 }
 
-var searchTimeDelay = 20;
+var searchTimeDelay = 5;
 var pathTimeDelay = 20;
 
 export function visualizeSearch(searchAlgorithm) {
