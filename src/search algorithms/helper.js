@@ -22,12 +22,22 @@ export class PriorityQueue {
 }
 
 // Helper Functions
-export function getstartNodeRef(nodeRefGrid) {
+export function getStartNodeRef(nodeRefGrid) {
   for (const nodeRefArray of nodeRefGrid) {
     for (const nodeRef of nodeRefArray) {
       if (nodeRef.current.state.isStart) return nodeRef;
     }
   }
+  return null;
+}
+
+export function getTargetNodeRef(nodeRefGrid) {
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      if (nodeRef.current.state.isTarget) return nodeRef;
+    }
+  }
+  return null;
 }
 
 export function printNodeRef(nodeRef) {
@@ -50,7 +60,7 @@ export function getNodeRefChildren(nodeRef, nodeRefGrid) {
   if (col + 1 < cols) nodeRefChildren.push(nodeRefGrid[row][col + 1]);
 
   // Even rows
-  if (row % 2 == 0) {
+  if (row % 2 === 0) {
     if (row - 1 >= 0) {
       nodeRefChildren.push(nodeRefGrid[row - 1][col]);
       if (col - 1 >= 0) nodeRefChildren.push(nodeRefGrid[row - 1][col - 1]);

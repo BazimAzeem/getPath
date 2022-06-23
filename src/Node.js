@@ -7,8 +7,6 @@ var isMovingStart = false;
 var isMovingTarget = false;
 window.addEventListener("mouseup", () => {
   isMakingWall = false;
-  isMovingStart = false;
-  isMovingTarget = false;
 });
 
 class Node extends React.Component {
@@ -28,13 +26,15 @@ class Node extends React.Component {
     this.distance = Infinity;
     this.predecessor = null;
 
+    this.wasWall = false;
+
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
-  resetToDefault() {
+  resetEverything() {
     this.isVisited = false;
     this.weight = 1;
     this.distance = Infinity;
@@ -42,9 +42,16 @@ class Node extends React.Component {
     this.setState(this.defaultState);
   }
 
-  makeWall() {
+  resetVisitedAndPath() {
+    this.isVisited = false;
+    this.distance = Infinity;
+    this.predecessor = null;
+    this.setState({ isPath: false, isVisited: false });
+  }
+
+  toggleWall() {
     this.setState({ isWall: !this.state.isWall });
-    this.weight = this.weight == Infinity ? 1 : Infinity;
+    this.weight = this.weight === Infinity ? 1 : Infinity;
   }
 
   handleMouseDown() {
@@ -53,26 +60,36 @@ class Node extends React.Component {
     } else if (this.state.isTarget) {
       isMovingTarget = true;
     } else {
-      this.makeWall();
+      this.toggleWall();
       isMakingWall = true;
     }
   }
 
   handleMouseEnter() {
     if (isMovingStart) {
-      this.setState({ isStart: true, isWall: false });
+      this.setState({ isStart: true });
+      if (this.state.isWall) {
+        this.toggleWall();
+        this.wasWall = true;
+      }
     } else if (isMovingTarget) {
-      this.setState({ isTarget: true, isWall: false });
+      this.setState({ isTarget: true });
+      if (this.state.isWall) {
+        this.toggleWall();
+        this.wasWall = true;
+      }
     } else if (isMakingWall && !(this.state.isStart || this.state.isTarget)) {
-      this.makeWall();
+      this.toggleWall();
     }
   }
 
   handleMouseLeave() {
     if (isMovingStart) {
       this.setState({ isStart: false });
+      if (this.wasWall) this.toggleWall();
     } else if (isMovingTarget) {
       this.setState({ isTarget: false });
+      if (this.wasWall) this.toggleWall();
     }
   }
 
@@ -98,7 +115,7 @@ class Node extends React.Component {
         onMouseLeave={this.handleMouseLeave}
         onMouseUp={this.handleMouseUp}
         onClick={() => {
-          console.log(this.isVisited);
+          console.log(this.props, this.state);
         }}
       ></div>
     );

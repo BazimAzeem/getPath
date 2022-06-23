@@ -1,12 +1,7 @@
-import {
-  PriorityQueue,
-  getstartNodeRef,
-  printNodeRef,
-  getNodeRefChildren,
-} from "./helper";
+import { PriorityQueue, getStartNodeRef, getNodeRefChildren } from "./helper";
 
 export function djikstra(nodeRefGrid) {
-  var startNodeRef = getstartNodeRef(nodeRefGrid);
+  var startNodeRef = getStartNodeRef(nodeRefGrid);
   startNodeRef.current.distance = 0;
   var pq = new PriorityQueue(nodeRefGrid);
 
@@ -18,7 +13,7 @@ export function djikstra(nodeRefGrid) {
 
     if (
       minNodeRef.current.state.isTarget ||
-      minNodeRef.current.distance == Infinity
+      minNodeRef.current.distance === Infinity
     )
       return visitedNodeRefs;
 

@@ -1,7 +1,6 @@
 import React from "react";
 import Node from "./Node";
 import "./NodeGrid.css";
-import djikstra from "./search algorithms/djikstra";
 
 var [rows, cols] = getNodeGridDimensions();
 export var nodeRefGrid = getNodeRefGrid(rows, cols);
@@ -78,8 +77,8 @@ function getNode(row, col, rows, cols, nodeRef) {
   let targetCol = parseInt((2 * cols) / 3);
 
   let key = row * cols + col;
-  let isStart = row == startRow && col == startCol;
-  let isTarget = row == targetRow && col == targetCol;
+  let isStart = row === startRow && col === startCol;
+  let isTarget = row === targetRow && col === targetCol;
 
   let node = (
     <Node
@@ -102,7 +101,7 @@ export function visualizeSearch(searchAlgorithm) {
   return new Promise((resolve) => {
     var visitedNodeRefs = searchAlgorithm(nodeRefGrid);
     for (let i = 0; i <= visitedNodeRefs.length; i++) {
-      if (i == visitedNodeRefs.length)
+      if (i === visitedNodeRefs.length)
         setTimeout(() => {
           resolve(visitedNodeRefs[i - 1]);
         }, searchTimeDelay * i);
@@ -127,7 +126,7 @@ export function visualizePath(targetNodeRef) {
     pathNodeRefs.reverse();
 
     for (let i = 0; i <= pathNodeRefs.length; i++) {
-      if (i == pathNodeRefs.length)
+      if (i === pathNodeRefs.length)
         setTimeout(() => {
           resolve(pathNodeRefs);
         }, pathTimeDelay * i);
@@ -138,4 +137,19 @@ export function visualizePath(targetNodeRef) {
       }
     }
   });
+}
+
+export function clearWalls() {
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      if (nodeRef.current.state.isWall) nodeRef.current.toggleWall();
+    }
+  }
+}
+export function clearSearchAndPath() {
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      nodeRef.current.resetVisitedAndPath();
+    }
+  }
 }
