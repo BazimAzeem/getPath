@@ -1,16 +1,16 @@
 import React from "react";
 import Node from "./Node";
 import "./NodeGrid.css";
+import { isVisualizing } from "./NavBar";
 
 var [rows, cols] = getNodeGridDimensions();
 export var nodeRefGrid = getNodeRefGrid(rows, cols);
-var nodeGrid = getNodeGrid(rows, cols, nodeRefGrid);
 
 const NodeGrid = () => {
   return (
     <div className="node-grid__wrapper">
       <div className="node-grid">
-        {nodeGrid.map((nodeArray) => (
+        {getNodeGrid(rows, cols, nodeRefGrid).map((nodeArray) => (
           <div
             key={nodeArray[0].props.row}
             style={{ width: "105%", whiteSpace: "nowrap" }}
@@ -36,7 +36,7 @@ function getNodeGridDimensions() {
   let screenWidth = window.screen.availWidth;
   let screenHeight = window.screen.availHeight;
 
-  let rows = parseInt(screenHeight / nodeWidth - 1);
+  let rows = parseInt(screenHeight / nodeWidth + 2);
   let cols = parseInt(screenWidth / nodeWidth);
 
   return [rows, cols];
@@ -94,48 +94,53 @@ function getNode(row, col, rows, cols, nodeRef) {
   return node;
 }
 
-var searchTimeDelay = 5;
+var searchTimeDelay = 20;
 var pathTimeDelay = 20;
 
-export function visualizeSearch(searchAlgorithm) {
+export async function visualizeSearch(searchAlgorithm) {
+  var visitedNodeRefs = searchAlgorithm(nodeRefGrid);
+  await iterateSearch(0, visitedNodeRefs);
+  return visitedNodeRefs[visitedNodeRefs.length - 1];
+}
+
+function iterateSearch(i, visitedNodeRefs) {
   return new Promise((resolve) => {
-    var visitedNodeRefs = searchAlgorithm(nodeRefGrid);
-    for (let i = 0; i <= visitedNodeRefs.length; i++) {
-      if (i === visitedNodeRefs.length)
-        setTimeout(() => {
-          resolve(visitedNodeRefs[i - 1]);
-        }, searchTimeDelay * i);
-      else {
-        setTimeout(() => {
-          visitedNodeRefs[i].current.setState({ isVisited: true });
-        }, searchTimeDelay * i);
-      }
-    }
+    if (isVisualizing && i < visitedNodeRefs.length) {
+      setTimeout(async () => {
+        visitedNodeRefs[i].current.setState({ isVisited: true });
+        i++;
+        await iterateSearch(i, visitedNodeRefs);
+        resolve();
+      }, searchTimeDelay);
+    } else resolve();
   });
 }
 
-export function visualizePath(targetNodeRef) {
-  return new Promise((resolve) => {
-    var pathNodeRefs = [];
-    var currentNodeRef = targetNodeRef;
-    while (!currentNodeRef.current.state.isStart) {
-      pathNodeRefs.push(currentNodeRef);
-      currentNodeRef = currentNodeRef.current.predecessor;
-    }
+export async function visualizePath(targetNodeRef) {
+  if (!isVisualizing) return;
+  var pathNodeRefs = [];
+  var currentNodeRef = targetNodeRef;
+  while (!currentNodeRef.current.state.isStart) {
     pathNodeRefs.push(currentNodeRef);
-    pathNodeRefs.reverse();
+    currentNodeRef = currentNodeRef.current.predecessor;
+  }
+  pathNodeRefs.push(currentNodeRef);
+  pathNodeRefs.reverse();
 
-    for (let i = 0; i <= pathNodeRefs.length; i++) {
-      if (i === pathNodeRefs.length)
-        setTimeout(() => {
-          resolve(pathNodeRefs);
-        }, pathTimeDelay * i);
-      else {
-        setTimeout(() => {
-          pathNodeRefs[i].current.setState({ isVisited: false, isPath: true });
-        }, pathTimeDelay * i);
-      }
-    }
+  await iteratePath(0, pathNodeRefs);
+  return;
+}
+
+function iteratePath(i, pathNodeRefs) {
+  return new Promise((resolve) => {
+    if (isVisualizing && i < pathNodeRefs.length) {
+      setTimeout(async () => {
+        pathNodeRefs[i].current.setState({ isVisited: false, isPath: true });
+        i++;
+        await iteratePath(i, pathNodeRefs);
+        resolve();
+      }, pathTimeDelay);
+    } else resolve();
   });
 }
 

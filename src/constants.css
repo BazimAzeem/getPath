@@ -1,10 +1,14 @@
 :root {
+  overflow: hidden;
+
   /* Size Constants */
   --hexagon-width: 1.5rem;
+  --hexagon-height: calc(var(--hexagon-width) * 1.1547);
   --hexagon-spacing: 0.0175rem;
   --hexagon-alignment: calc(
     var(--hexagon-width) * 1.732 + 4 * var(--hexagon-spacing) - 1px
   );
+  --weight-font-size: 1.4rem;
 
   /* Color Constants */
   --primary-color: #1f282f;
@@ -14,4 +18,5 @@
   --tertiary-accent-color: #fff41c;
   --quaternary-accent-color: #e9f7a3;
   --primary-light-color: #d1ecff;
+  --weight-font-color: #d1ecff30;
 }

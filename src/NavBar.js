@@ -9,12 +9,20 @@ import {
 } from "./NodeGrid";
 import { djikstra } from "./search algorithms/djikstra";
 
+// Global isVisualizing
+export var isVisualizing = false;
+
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isVisualizing: false,
     };
+  }
+
+  toggleVisualizing() {
+    this.setState({ isVisualizing: !this.state.isVisualizing });
+    isVisualizing = !isVisualizing;
   }
 
   render() {
@@ -26,12 +34,17 @@ class NavBar extends React.Component {
               <Button
                 onClick={async () => {
                   if (!this.state.isVisualizing) {
-                    this.setState({ isVisualizing: true });
+                    this.toggleVisualizing();
+                    clearSearchAndPath();
                     var targetNodeRef = await visualizeSearch(djikstra);
                     await visualizePath(targetNodeRef);
                     this.setState({ isVisualizing: false });
+                    isVisualizing = false;
                   } else {
-                    this.setState({ isVisualizing: false });
+                    this.toggleVisualizing();
+                    setTimeout(() => {
+                      clearSearchAndPath();
+                    }, 10);
                   }
                 }}
               >

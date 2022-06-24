@@ -20,17 +20,9 @@
 }
 
 .node-is-wall {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
   animation-name: isWallNodeAnimation;
   animation-duration: 0.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-play-state: running;
 }
 
 @keyframes isWallNodeAnimation {
@@ -45,7 +37,7 @@
   }
 
   75% {
-    transform: scale(1.075);
+    transform: scale(1.1);
     background-color: var(--primary-light-color);
   }
 
@@ -56,17 +48,9 @@
 }
 
 .node-is-visited {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
   animation-name: isVisitedNodeAnimation;
   animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-play-state: running;
 }
 
 @keyframes isVisitedNodeAnimation {
@@ -92,17 +76,9 @@
 }
 
 .node-is-path {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
   animation-name: isPathNodeAnimation;
   animation-duration: 1s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-play-state: running;
 }
 
 @keyframes isPathNodeAnimation {
@@ -124,5 +100,45 @@
   100% {
     transform: scale(1.0625);
     background-color: var(--tertiary-accent-color);
+  }
+}
+
+.node-is-weight {
+  overflow: hidden;
+}
+
+.node-is-weight p {
+  color: var(--weight-font-color);
+  font-size: var(--weight-font-size);
+  font-family: "Kanit", sans-serif;
+  letter-spacing: normal;
+  line-height: var(--hexagon-height);
+  text-align: center;
+  overflow: hidden;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  animation-name: isWeightNodeAnimation;
+  animation-duration: 0.375s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes isWeightNodeAnimation {
+  0% {
+    font-size: calc(var(--weight-font-size) * 0);
+  }
+
+  25% {
+    font-size: calc(var(--weight-font-size) * 0);
+  }
+
+  75% {
+    font-size: calc(var(--weight-font-size) * 1.075);
+  }
+
+  100% {
+    font-size: calc(var(--weight-font-size) * 1);
   }
 }
