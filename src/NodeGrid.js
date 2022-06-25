@@ -95,7 +95,7 @@ function getNode(row, col, rows, cols, nodeRef) {
 }
 
 var searchTimeDelay = 20;
-var pathTimeDelay = 20;
+var pathTimeDelay = 40;
 
 export async function visualizeSearch(searchAlgorithm) {
   var visitedNodeRefs = searchAlgorithm(nodeRefGrid);
@@ -144,10 +144,16 @@ function iteratePath(i, pathNodeRefs) {
   });
 }
 
-export function clearWalls() {
+export function clearWallsAndWeights() {
   for (const nodeRefArray of nodeRefGrid) {
     for (const nodeRef of nodeRefArray) {
       if (nodeRef.current.state.isWall) nodeRef.current.toggleWall();
+      else if (nodeRef.current.state.isSmallWeight)
+        nodeRef.current.toggleSmallWeight();
+      else if (nodeRef.current.state.isMediumWeight)
+        nodeRef.current.toggleMediumWeight();
+      else if (nodeRef.current.state.isLargeWeight)
+        nodeRef.current.toggleLargeWeight();
     }
   }
 }

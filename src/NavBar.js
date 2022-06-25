@@ -4,10 +4,11 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 import {
   visualizeSearch,
   visualizePath,
-  clearWalls,
+  clearWallsAndWeights,
   clearSearchAndPath,
 } from "./NodeGrid";
 import { djikstra } from "./search algorithms/djikstra";
+import "./NavBar.css";
 
 // Global isVisualizing
 export var isVisualizing = false;
@@ -28,7 +29,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar fixed="top" variant="dark" bg="dark">
+        <Navbar className="nav-bar">
           <Nav>
             <Nav.Item>
               <Button
@@ -44,7 +45,7 @@ class NavBar extends React.Component {
                     this.toggleVisualizing();
                     setTimeout(() => {
                       clearSearchAndPath();
-                    }, 10);
+                    }, 20);
                   }
                 }}
               >
@@ -54,11 +55,19 @@ class NavBar extends React.Component {
             <Nav.Item>
               <Button
                 onClick={() => {
-                  clearWalls();
+                  clearWallsAndWeights();
+                }}
+              >
+                Clear Walls And Weights
+              </Button>
+            </Nav.Item>
+            <Nav.Item>
+              <Button
+                onClick={() => {
                   clearSearchAndPath();
                 }}
               >
-                Clear
+                Clear Search And Path
               </Button>
             </Nav.Item>
           </Nav>

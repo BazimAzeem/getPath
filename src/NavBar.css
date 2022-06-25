@@ -1,0 +1,8 @@
+@import "./constants.css";
+
+.nav-bar {
+  background-color: var(--primary-dark-color);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
