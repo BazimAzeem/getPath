@@ -20,12 +20,10 @@ var keysPressed = {};
 window.addEventListener("keydown", (event) => {
   if (event.repeat) return;
   keysPressed[event.key] = true;
-  console.log(keysPressed);
 });
 
 window.addEventListener("keyup", (event) => {
   delete keysPressed[event.key];
-  console.log(keysPressed);
 });
 
 class Node extends React.Component {
@@ -245,11 +243,11 @@ class Node extends React.Component {
         }}
       >
         {this.state.isStart ? (
-          <span class="material-symbols-outlined">
+          <span className="material-symbols-outlined start">
             keyboard_double_arrow_right
           </span>
         ) : this.state.isTarget ? (
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-outlined target">
             nest_thermostat_gen_3
           </span>
         ) : (

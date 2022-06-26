@@ -36,8 +36,8 @@ function getNodeGridDimensions() {
   let screenWidth = window.screen.availWidth;
   let screenHeight = window.screen.availHeight;
 
-  let rows = parseInt(screenHeight / nodeWidth + 2);
-  let cols = parseInt(screenWidth / nodeWidth);
+  let rows = parseInt(screenHeight / nodeWidth + 4);
+  let cols = parseInt(screenWidth / nodeWidth + 2);
 
   return [rows, cols];
 }

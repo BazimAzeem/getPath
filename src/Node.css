@@ -25,23 +25,29 @@
   color: var(--start-and-target-font-color);
 }
 
-.material-symbols-outlined {
-  font-size: 1.4rem;
-  line-height: var(--hexagon-height);
-  animation: isStartOrTargetNodeAnimation 0.375s forwards;
+.node-is-start .material-symbols-outlined {
+  font-size: 1.5rem;
+  line-height: calc(var(--hexagon-height) + var(--hexagon-spacing));
+  animation: isStartOrTargetNodeAnimation 3s ease-in-out infinite;
+}
+
+.node-is-target .material-symbols-outlined {
+  font-size: 1.3rem;
+  line-height: calc(var(--hexagon-height) + var(--hexagon-spacing));
+  animation: isStartOrTargetNodeAnimation 3s ease-in-out infinite;
 }
 
 @keyframes isStartOrTargetNodeAnimation {
-  25% {
-    transform: scale(0.5);
+  0% {
+    transform: scale(0.8);
   }
 
-  75% {
-    transform: scale(1.1);
+  50% {
+    transform: scale(1);
   }
 
   100% {
-    transform: scale(1);
+    transform: scale(0.8);
   }
 }
 
@@ -90,7 +96,7 @@
   font-size: 0;
   font-family: "Kanit", sans-serif;
   opacity: 0.25;
-  line-height: var(--hexagon-height);
+  line-height: calc(var(--hexagon-height) + var(--hexagon-spacing));
   animation: isWeightNodeAnimation 0.375s forwards;
 }
 

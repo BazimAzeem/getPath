@@ -1,8 +1,54 @@
 @import "./constants.css";
 
-.nav-bar {
+.navbar,
+.navbar-toggler,
+.nav-link,
+.dropdown-menu,
+.dropdown-item,
+.offcanvas {
   background-color: var(--primary-dark-color);
-  position: fixed;
-  top: 0;
-  width: 100%;
+  color: var(--primary-light-color) !important;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.navbar {
+  padding: 0;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler:hover,
+.nav-link:hover,
+.dropdown-item:hover {
+  background-color: initial;
+  color: var(--secondary-accent-color) !important;
+}
+
+.nav-link {
+  margin: 1rem;
+  padding: 0rem;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.dropdown-menu {
+  border-radius: 0;
+  border: none;
+}
+
+.offcanvas-header {
+  padding: 0;
+  justify-content: start;
+}
+
+.offcanvas-title {
 }

@@ -1,6 +1,9 @@
-:root {
+html,
+body {
   overflow: hidden;
+}
 
+:root {
   /* Size Constants */
   --hexagon-width: 1.5rem;
   --hexagon-height: calc(var(--hexagon-width) * 1.1547);
@@ -17,7 +20,7 @@
   --secondary-accent-color: #a3f7bf;
   --tertiary-accent-color: #fff41c;
   --quaternary-accent-color: #e9f7a3;
-  --primary-light-color: #d1ecff;
+  --primary-light-color: #e7f3fc;
   --primary-dark-color: #171f26;
   --weight-font-color: var(--primary-light-color);
   --start-and-target-font-color: var(--secondary-accent-color);
