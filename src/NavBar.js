@@ -5,7 +5,8 @@ import {
   Nav,
   NavDropdown,
   Offcanvas,
-  Container,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "react-bootstrap";
 import {
   visualizeSearch,
@@ -13,17 +14,23 @@ import {
   clearWallsAndWeights,
   clearSearchAndPath,
 } from "./NodeGrid";
+import Node from "./Node";
 import { djikstra } from "./search algorithms/djikstra";
 import "./NavBar.css";
 
-// Global isVisualizing
+// Global
 export var isVisualizing = false;
+export var makeWall = true;
+export var makeSmallWeight = false;
+export var makeMediumWeight = false;
+export var makeLargeWeight = false;
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isVisualizing: false,
+      showCollapsed: false,
       showLegend: false,
     };
   }
@@ -35,10 +42,10 @@ class NavBar extends React.Component {
 
   render() {
     return (
-      <Navbar expand="lg">
+      <Navbar expand="sm" expanded={this.state.showCollapsed}>
         <Nav.Link
           onClick={() => {
-            this.setState({ showLegend: !this.state.showLegend });
+            this.setState({ showLegend: true });
           }}
         >
           <span className="material-symbols-outlined">help</span>
@@ -64,55 +71,102 @@ class NavBar extends React.Component {
             I will be placing a description for each symbol here
           </Offcanvas.Body>
         </Offcanvas>
-        <Navbar.Toggle>
+        <Navbar.Toggle
+          onClick={() => {
+            this.setState({ showCollapsed: !this.state.showCollapsed });
+          }}
+        >
           <span className="material-symbols-outlined">menu</span>
         </Navbar.Toggle>
-        <Navbar.Collapse>
-          <Nav>
-            <NavDropdown title="Algorithms">
-              <NavDropdown.Item>Action</NavDropdown.Item>
-              <NavDropdown.Item>Another action</NavDropdown.Item>
-              <NavDropdown.Item>Something else here</NavDropdown.Item>
-              <NavDropdown.Item>Separated link</NavDropdown.Item>
-            </NavDropdown>
+        <Navbar.Offcanvas
+          placement="top"
+          show={this.state.showCollapsed}
+          onHide={() => {
+            this.setState({ showCollapsed: false });
+          }}
+        >
+          <Offcanvas.Header>
             <Nav.Link
-              onClick={async () => {
-                if (!this.state.isVisualizing) {
-                  this.toggleVisualizing();
-                  clearSearchAndPath();
-                  var targetNodeRef = await visualizeSearch(djikstra);
-                  await visualizePath(targetNodeRef);
-                  this.setState({ isVisualizing: false });
-                  isVisualizing = false;
-                } else {
-                  this.toggleVisualizing();
-                  setTimeout(() => {
+              onClick={() => {
+                this.setState({ showCollapsed: false });
+              }}
+            >
+              <span className="material-symbols-outlined">close</span>
+            </Nav.Link>
+            <Offcanvas.Title>Options</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav>
+              <NavDropdown title="Algorithms">
+                <NavDropdown.Item>Action</NavDropdown.Item>
+                <NavDropdown.Item>Another action</NavDropdown.Item>
+                <NavDropdown.Item>Something else here</NavDropdown.Item>
+                <NavDropdown.Item>Separated link</NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link
+                onClick={async () => {
+                  if (!this.state.isVisualizing) {
+                    this.toggleVisualizing();
                     clearSearchAndPath();
-                  }, 20);
-                }
+                    var targetNodeRef = await visualizeSearch(djikstra);
+                    await visualizePath(targetNodeRef);
+                    this.setState({ isVisualizing: false });
+                    isVisualizing = false;
+                  } else {
+                    this.toggleVisualizing();
+                    setTimeout(() => {
+                      clearSearchAndPath();
+                    }, 20);
+                  }
+                }}
+                href="#"
+              >
+                {!this.state.isVisualizing ? "Visualize" : "Cancel"}
+              </Nav.Link>
+              <Nav.Link
+                disabled={isVisualizing}
+                onClick={() => {
+                  clearSearchAndPath();
+                }}
+                href="#"
+              >
+                Clear Search And Path
+              </Nav.Link>
+              <Nav.Link
+                onClick={() => {
+                  clearWallsAndWeights();
+                }}
+                href="#"
+              >
+                Clear Walls And Weights
+              </Nav.Link>
+            </Nav>
+            <ToggleButtonGroup
+              type="radio"
+              name="options"
+              defaultValue={1}
+              onChange={(value) => {
+                makeWall = value == 1;
+                makeSmallWeight = value == 2;
+                makeMediumWeight = value == 3;
+                makeLargeWeight = value == 4;
               }}
-              href="#"
             >
-              {!this.state.isVisualizing ? "Visualize" : "Cancel"}
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                clearWallsAndWeights();
-              }}
-              href="#"
-            >
-              Clear Walls And Weights
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                clearSearchAndPath();
-              }}
-              href="#"
-            >
-              Clear Search And Path
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+              <ToggleButton id="tbg-1" value={1}>
+                W
+              </ToggleButton>
+              <ToggleButton id="tbg-2" value={2}>
+                5
+              </ToggleButton>
+              <ToggleButton id="tbg-3" value={3}>
+                10
+              </ToggleButton>
+              <ToggleButton id="tbg-4" value={4}>
+                25
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
       </Navbar>
     );
   }

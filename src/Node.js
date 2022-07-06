@@ -1,6 +1,12 @@
 import React from "react";
 import "./Node.css";
-import { isVisualizing } from "./NavBar";
+import {
+  isVisualizing,
+  makeWall,
+  makeSmallWeight,
+  makeMediumWeight,
+  makeLargeWeight,
+} from "./NavBar";
 
 // Global
 var isMakingWall = false;
@@ -14,16 +20,6 @@ window.addEventListener("mouseup", () => {
   isMakingSmallWeight = false;
   isMakingMediumWeight = false;
   isMakingLargeWeight = false;
-});
-
-var keysPressed = {};
-window.addEventListener("keydown", (event) => {
-  if (event.repeat) return;
-  keysPressed[event.key] = true;
-});
-
-window.addEventListener("keyup", (event) => {
-  delete keysPressed[event.key];
 });
 
 class Node extends React.Component {
@@ -110,28 +106,16 @@ class Node extends React.Component {
         isMovingStart = true;
       } else if (this.state.isTarget) {
         isMovingTarget = true;
-      } else if (
-        Object.keys(keysPressed).length &&
-        "w" in keysPressed &&
-        "1" in keysPressed
-      ) {
+      } else if (makeSmallWeight) {
         this.toggleSmallWeight();
         isMakingSmallWeight = true;
-      } else if (
-        Object.keys(keysPressed).length &&
-        "w" in keysPressed &&
-        "2" in keysPressed
-      ) {
+      } else if (makeMediumWeight) {
         this.toggleMediumWeight();
         isMakingMediumWeight = true;
-      } else if (
-        Object.keys(keysPressed).length &&
-        "w" in keysPressed &&
-        "3" in keysPressed
-      ) {
+      } else if (makeLargeWeight) {
         this.toggleLargeWeight();
         isMakingLargeWeight = true;
-      } else {
+      } else if (makeWall) {
         this.toggleWall();
         isMakingWall = true;
       }
