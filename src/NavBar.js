@@ -14,6 +14,7 @@ import {
   clearWallsAndWeights,
   clearSearchAndPath,
 } from "./NodeGrid";
+import { visualizeMaze, primsMaze } from "./other/primsMaze";
 import Node from "./Node";
 import { djikstra } from "./search algorithms/djikstra";
 import "./NavBar.css";
@@ -43,34 +44,6 @@ class NavBar extends React.Component {
   render() {
     return (
       <Navbar expand="sm" expanded={this.state.showCollapsed}>
-        <Nav.Link
-          onClick={() => {
-            this.setState({ showLegend: true });
-          }}
-        >
-          <span className="material-symbols-outlined">help</span>
-        </Nav.Link>
-        <Offcanvas
-          placement="bottom"
-          show={this.state.showLegend}
-          onHide={() => {
-            this.setState({ showLegend: false });
-          }}
-        >
-          <Offcanvas.Header>
-            <Nav.Link
-              onClick={() => {
-                this.setState({ showLegend: false });
-              }}
-            >
-              <span className="material-symbols-outlined">close</span>
-            </Nav.Link>
-            <Offcanvas.Title>Legend</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            I will be placing a description for each symbol here
-          </Offcanvas.Body>
-        </Offcanvas>
         <Navbar.Toggle
           onClick={() => {
             this.setState({ showCollapsed: !this.state.showCollapsed });
@@ -87,6 +60,7 @@ class NavBar extends React.Component {
         >
           <Offcanvas.Header>
             <Nav.Link
+              as="button"
               onClick={() => {
                 this.setState({ showCollapsed: false });
               }}
@@ -104,6 +78,7 @@ class NavBar extends React.Component {
                 <NavDropdown.Item>Separated link</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link
+                as="button"
                 onClick={async () => {
                   if (!this.state.isVisualizing) {
                     this.toggleVisualizing();
@@ -119,24 +94,38 @@ class NavBar extends React.Component {
                     }, 20);
                   }
                 }}
-                href="#"
               >
                 {!this.state.isVisualizing ? "Visualize" : "Cancel"}
               </Nav.Link>
               <Nav.Link
+                as="button"
+                disabled={isVisualizing}
+                onClick={async () => {
+                  this.toggleVisualizing();
+                  clearSearchAndPath();
+                  clearWallsAndWeights();
+                  await visualizeMaze(primsMaze);
+                  this.setState({ isVisualizing: false });
+                  isVisualizing = false;
+                }}
+              >
+                Maze
+              </Nav.Link>
+              <Nav.Link
+                as="button"
                 disabled={isVisualizing}
                 onClick={() => {
                   clearSearchAndPath();
                 }}
-                href="#"
               >
                 Clear Search And Path
               </Nav.Link>
               <Nav.Link
+                as="button"
+                disabled={isVisualizing}
                 onClick={() => {
                   clearWallsAndWeights();
                 }}
-                href="#"
               >
                 Clear Walls And Weights
               </Nav.Link>
@@ -166,7 +155,37 @@ class NavBar extends React.Component {
               </ToggleButton>
             </ToggleButtonGroup>
           </Offcanvas.Body>
-        </Navbar.Offcanvas>
+        </Navbar.Offcanvas>{" "}
+        <Nav.Link
+          as="button"
+          onClick={() => {
+            this.setState({ showLegend: true });
+          }}
+        >
+          <span className="material-symbols-outlined">help</span>
+        </Nav.Link>
+        <Offcanvas
+          placement="bottom"
+          show={this.state.showLegend}
+          onHide={() => {
+            this.setState({ showLegend: false });
+          }}
+        >
+          <Offcanvas.Header>
+            <Nav.Link
+              as="button"
+              onClick={() => {
+                this.setState({ showLegend: false });
+              }}
+            >
+              <span className="material-symbols-outlined">close</span>
+            </Nav.Link>
+            <Offcanvas.Title>Legend</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            I will be placing a description for each symbol here
+          </Offcanvas.Body>
+        </Offcanvas>
       </Navbar>
     );
   }

@@ -38,6 +38,7 @@ class Node extends React.Component {
     this.defaultState = this.state;
 
     this.isVisited = false;
+    this.isVisiting = false;
     this.weight = 2.5;
     this.distance = Infinity;
     this.predecessor = null;
@@ -62,6 +63,7 @@ class Node extends React.Component {
   }
 
   resetVisitedAndPath() {
+    this.isVisiting = false;
     this.isVisited = false;
     this.distance = Infinity;
     this.predecessor = null;
@@ -201,6 +203,7 @@ class Node extends React.Component {
   render() {
     return (
       <div
+        ref={this.ref}
         className={
           "node" +
           (this.state.isStart ? " node-is-start" : "") +

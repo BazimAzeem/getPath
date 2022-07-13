@@ -36,7 +36,7 @@ function getNodeGridDimensions() {
   let screenWidth = window.screen.availWidth;
   let screenHeight = window.screen.availHeight;
 
-  let rows = parseInt(screenHeight / nodeWidth + 4);
+  let rows = parseInt(screenHeight / nodeWidth + 5);
   let cols = parseInt(screenWidth / nodeWidth + 2);
 
   return [rows, cols];
@@ -72,9 +72,9 @@ function getNodeGrid(rows, cols, nodeRefGrid) {
 
 function getNode(row, col, rows, cols, nodeRef) {
   let startRow = parseInt(rows / 2);
-  let startCol = parseInt(cols / 3);
+  let startCol = parseInt(cols / 4);
   let targetRow = parseInt(rows / 2);
-  let targetCol = parseInt((2 * cols) / 3);
+  let targetCol = parseInt((3 * cols) / 4);
 
   let key = row * cols + col;
   let isStart = row === startRow && col === startCol;
@@ -98,7 +98,13 @@ var searchTimeDelay = 20;
 var pathTimeDelay = 40;
 
 export async function visualizeSearch(searchAlgorithm) {
+  var startTime = performance.now();
+
   var visitedNodeRefs = searchAlgorithm(nodeRefGrid);
+  var endTime = performance.now();
+
+  console.log(`${endTime - startTime} ms`);
+
   await iterateSearch(0, visitedNodeRefs);
   return visitedNodeRefs[visitedNodeRefs.length - 1];
 }

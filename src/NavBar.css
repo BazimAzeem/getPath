@@ -17,7 +17,8 @@
   padding: 0;
 }
 
-.navbar-toggler {
+.navbar-toggler,
+button {
   border: none;
 }
 
@@ -32,19 +33,14 @@
   color: var(--secondary-accent-color) !important;
 }
 
-.nav-link {
+.nav-link,
+.navbar-toggler {
   margin: 1rem;
   padding: 0rem;
   display: flex;
   align-items: center;
   text-align: center;
   width: fit-content;
-}
-
-.dropdown {
-  display: flex;
-  align-items: center;
-  text-align: center;
 }
 
 .dropdown-menu {
