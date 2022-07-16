@@ -26,14 +26,14 @@ class Node extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isVisited: false,
-      isWall: false,
-      isPath: false,
+      isVisited: this.props.isVisited,
+      isWall: this.props.isWall,
+      isPath: this.props.isPath,
       isStart: this.props.isStart,
       isTarget: this.props.isTarget,
-      isSmallWeight: false,
-      isMediumWeight: false,
-      isLargeWeight: false,
+      isSmallWeight: this.props.isSmallWeight,
+      isMediumWeight: this.props.isMediumWeight,
+      isLargeWeight: this.props.isLargeWeight,
     };
     this.defaultState = this.state;
 
@@ -103,7 +103,7 @@ class Node extends React.Component {
   }
 
   handleMouseDown() {
-    if (!isVisualizing) {
+    if (!isVisualizing && !this.props.isDisabled) {
       if (this.state.isStart) {
         isMovingStart = true;
       } else if (this.state.isTarget) {
@@ -125,79 +125,85 @@ class Node extends React.Component {
   }
 
   handleMouseEnter() {
-    if (isMovingStart) {
-      this.setState({ isStart: true });
-      if (this.state.isWall) {
-        this.toggleWall();
-        this.wasWall = true;
-      } else if (this.state.isSmallWeight) {
+    if (!this.props.isDisabled) {
+      if (isMovingStart) {
+        this.setState({ isStart: true });
+        if (this.state.isWall) {
+          this.toggleWall();
+          this.wasWall = true;
+        } else if (this.state.isSmallWeight) {
+          this.toggleSmallWeight();
+          this.wasSmallWeight = true;
+        } else if (this.state.isMediumWeight) {
+          this.toggleMediumWeight();
+          this.wasMediumWeight = true;
+        } else if (this.state.isLargeWeight) {
+          this.toggleLargeWeight();
+          this.wasLargeWeight = true;
+        }
+      } else if (isMovingTarget) {
+        this.setState({ isTarget: true });
+        if (this.state.isWall) {
+          this.toggleWall();
+          this.wasWall = true;
+        } else if (this.state.isSmallWeight) {
+          this.toggleSmallWeight();
+          this.wasSmallWeight = true;
+        } else if (this.state.isMediumWeight) {
+          this.toggleMediumWeight();
+          this.wasMediumWeight = true;
+        } else if (this.state.isLargeWeight) {
+          this.toggleLargeWeight();
+          this.wasLargeWeight = true;
+        }
+      } else if (
+        isMakingSmallWeight &&
+        !(this.state.isStart || this.state.isTarget)
+      ) {
         this.toggleSmallWeight();
-        this.wasSmallWeight = true;
-      } else if (this.state.isMediumWeight) {
+      } else if (
+        isMakingMediumWeight &&
+        !(this.state.isStart || this.state.isTarget)
+      ) {
         this.toggleMediumWeight();
-        this.wasMediumWeight = true;
-      } else if (this.state.isLargeWeight) {
+      } else if (
+        isMakingLargeWeight &&
+        !(this.state.isStart || this.state.isTarget)
+      ) {
         this.toggleLargeWeight();
-        this.wasLargeWeight = true;
-      }
-    } else if (isMovingTarget) {
-      this.setState({ isTarget: true });
-      if (this.state.isWall) {
+      } else if (isMakingWall && !(this.state.isStart || this.state.isTarget)) {
         this.toggleWall();
-        this.wasWall = true;
-      } else if (this.state.isSmallWeight) {
-        this.toggleSmallWeight();
-        this.wasSmallWeight = true;
-      } else if (this.state.isMediumWeight) {
-        this.toggleMediumWeight();
-        this.wasMediumWeight = true;
-      } else if (this.state.isLargeWeight) {
-        this.toggleLargeWeight();
-        this.wasLargeWeight = true;
       }
-    } else if (
-      isMakingSmallWeight &&
-      !(this.state.isStart || this.state.isTarget)
-    ) {
-      this.toggleSmallWeight();
-    } else if (
-      isMakingMediumWeight &&
-      !(this.state.isStart || this.state.isTarget)
-    ) {
-      this.toggleMediumWeight();
-    } else if (
-      isMakingLargeWeight &&
-      !(this.state.isStart || this.state.isTarget)
-    ) {
-      this.toggleLargeWeight();
-    } else if (isMakingWall && !(this.state.isStart || this.state.isTarget)) {
-      this.toggleWall();
     }
   }
 
   handleMouseLeave() {
-    if (isMovingStart) {
-      this.setState({ isStart: false });
-      if (this.wasWall) this.toggleWall();
-      else if (this.wasSmallWeight) this.toggleSmallWeight();
-      else if (this.wasMediumWeight) this.toggleMediumWeight();
-      else if (this.wasLargeWeight) this.toggleLargeWeight();
-    } else if (isMovingTarget) {
-      this.setState({ isTarget: false });
-      if (this.wasWall) this.toggleWall();
-      else if (this.wasSmallWeight) this.toggleSmallWeight();
-      else if (this.wasMediumWeight) this.toggleMediumWeight();
-      else if (this.wasLargeWeight) this.toggleLargeWeight();
+    if (!this.props.isDisabled) {
+      if (isMovingStart) {
+        this.setState({ isStart: false });
+        if (this.wasWall) this.toggleWall();
+        else if (this.wasSmallWeight) this.toggleSmallWeight();
+        else if (this.wasMediumWeight) this.toggleMediumWeight();
+        else if (this.wasLargeWeight) this.toggleLargeWeight();
+      } else if (isMovingTarget) {
+        this.setState({ isTarget: false });
+        if (this.wasWall) this.toggleWall();
+        else if (this.wasSmallWeight) this.toggleSmallWeight();
+        else if (this.wasMediumWeight) this.toggleMediumWeight();
+        else if (this.wasLargeWeight) this.toggleLargeWeight();
+      }
     }
   }
 
   handleMouseUp() {
-    isMakingWall = false;
-    if (!this.state.isTarget) isMovingStart = false;
-    if (!this.state.isStart) isMovingTarget = false;
-    isMakingSmallWeight = false;
-    isMakingMediumWeight = false;
-    isMakingLargeWeight = false;
+    if (!this.props.isDisabled) {
+      isMakingWall = false;
+      if (!this.state.isTarget) isMovingStart = false;
+      if (!this.state.isStart) isMovingTarget = false;
+      isMakingSmallWeight = false;
+      isMakingMediumWeight = false;
+      isMakingLargeWeight = false;
+    }
   }
 
   render() {

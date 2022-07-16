@@ -27,28 +27,28 @@
 }
 
 .node-is-start .material-symbols-outlined {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   line-height: calc(var(--hexagon-height) + var(--hexagon-spacing));
-  animation: isStartOrTargetNodeAnimation 3s ease-in-out infinite;
+  animation: isStartOrTargetNodeAnimation 0.375s forwards;
 }
 
 .node-is-target .material-symbols-outlined {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   line-height: calc(var(--hexagon-height) + var(--hexagon-spacing));
-  animation: isStartOrTargetNodeAnimation 3s ease-in-out infinite;
+  animation: isStartOrTargetNodeAnimation 0.375s forwards;
 }
 
 @keyframes isStartOrTargetNodeAnimation {
   0% {
-    transform: scale(0.8);
+    transform: scale(0.25);
   }
 
-  50% {
-    transform: scale(1);
+  75% {
+    transform: scale(1.05);
   }
 
   100% {
-    transform: scale(0.8);
+    transform: scale(1);
   }
 }
 

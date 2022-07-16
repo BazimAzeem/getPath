@@ -43,6 +43,10 @@ button {
   width: fit-content;
 }
 
+.dropdown {
+  margin: auto 0;
+}
+
 .dropdown-menu {
   border-radius: 0;
   border: none;
@@ -55,4 +59,27 @@ button {
 
 .offcanvas {
   height: max-content;
+}
+
+.toggle-button-group {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.toggle-button {
+  background-color: #364145;
+  margin: 0.75rem 0.125rem !important;
+  padding: 0.1rem;
+  border: none;
+  margin: var(--hexagon-spacing);
+  display: inline-block;
+  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+}
+
+.toggle-button-checked,
+.toggle-button:hover,
+.toggle-button:focus,
+.toggle-button:active {
+  background-color: var(--secondary-accent-color) !important;
 }
