@@ -17,6 +17,7 @@ import {
 import Node from "./Node";
 import { visualizeMaze, primsMaze } from "./other/primsMaze";
 import { djikstra } from "./search algorithms/djikstra";
+import { aStar } from "./search algorithms/aStar";
 import "./NavBar.css";
 
 // Global
@@ -29,12 +30,25 @@ export var makeLargeWeight = false;
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
+    this.algorithms = [
+      {
+        name: "Djikstra's",
+        function: djikstra,
+      },
+      {
+        name: "A*",
+        function: aStar,
+      },
+    ];
+
     this.state = {
       isVisualizing: false,
       showCollapsed: false,
       showLegend: false,
       wallAndWeightsToggleValue: "1",
+      chosenAlgorithm: this.algorithms[0],
     };
+
     this.isVisualizingSearch = false;
     this.isVisualizingMaze = false;
 
@@ -183,7 +197,19 @@ class NavBar extends React.Component {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav>
-              <NavDropdown title="Algorithms">
+              <NavDropdown
+                title={"Algorithm: " + this.state.chosenAlgorithm.name}
+              >
+                {this.algorithms.map((algorithm, index) => (
+                  <NavDropdown.Item
+                    key={index}
+                    onClick={() =>
+                      this.setState({ chosenAlgorithm: algorithm })
+                    }
+                  >
+                    {algorithm.name}
+                  </NavDropdown.Item>
+                ))}
                 <NavDropdown.Item>An algorithm</NavDropdown.Item>
                 <NavDropdown.Item>Another algorithm</NavDropdown.Item>
                 <NavDropdown.Item>
@@ -199,7 +225,9 @@ class NavBar extends React.Component {
                     this.setVisualizing();
                     this.isVisualizingSearch = true;
                     clearSearchAndPath();
-                    var targetNodeRef = await visualizeSearch(djikstra);
+                    var targetNodeRef = await visualizeSearch(
+                      this.state.chosenAlgorithm.function
+                    );
                     await visualizePath(targetNodeRef);
                     this.resetVisualizing();
                     this.isVisualizingSearch = false;
@@ -315,7 +343,7 @@ class NavBar extends React.Component {
           </Offcanvas.Header>
           <Offcanvas.Body className="legend-body">
             {this.legendEntrees.map((legendEntree, index) => (
-              <article className="legend-entree">
+              <article key={index} className="legend-entree">
                 <div className="legend-entree__heading">
                   {legendEntree.node}
                   <h5 className="legend-entree__title">{legendEntree.title}</h5>

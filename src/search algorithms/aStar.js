@@ -1,8 +1,17 @@
-import { getStartNodeRef, getNodeRefChildren, printNodeRef } from "./helper";
+import {
+  getStartNodeRef,
+  getTargetNodeRef,
+  getNodeRefChildren,
+  printNodeRef,
+} from "./helper";
 
-export function djikstra(nodeRefGrid) {
+export function aStar(nodeRefGrid) {
+  var targetNodeRef = getTargetNodeRef(nodeRefGrid);
+  fillHeuristic(targetNodeRef, nodeRefGrid);
+
   var startNodeRef = getStartNodeRef(nodeRefGrid);
   startNodeRef.current.distance = 0;
+  startNodeRef.current.cost = startNodeRef.current.heuristic;
   var pq = new PriorityQueue(nodeRefGrid);
 
   var visitedNodeRefs = [];
@@ -26,6 +35,8 @@ export function djikstra(nodeRefGrid) {
       ) {
         minNodeRefChild.current.distance =
           minNodeRef.current.distance + minNodeRefChild.current.weight;
+        minNodeRefChild.current.cost =
+          minNodeRefChild.current.distance + minNodeRefChild.current.heuristic;
         minNodeRefChild.current.predecessor = minNodeRef;
       }
     }
@@ -35,7 +46,7 @@ export function djikstra(nodeRefGrid) {
   return visitedNodeRefs;
 }
 
-export default djikstra;
+export default aStar;
 
 class PriorityQueue {
   constructor(nodeRefGrid) {
@@ -48,14 +59,26 @@ class PriorityQueue {
   }
 
   updatePriorityQueue() {
-    this.nodeRefs.sort((a, b) =>
-      a.current.distance < b.current.distance ? 1 : -1
-    );
+    this.nodeRefs.sort((a, b) => (a.current.cost < b.current.cost ? 1 : -1));
   }
 
   printPriorityQueue() {
     for (const nodeRef of this.nodeRefs) {
       printNodeRef(nodeRef);
+    }
+  }
+}
+
+function fillHeuristic(targetNodeRef, nodeRefGrid) {
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      var curRow = nodeRef.current.props.row;
+      var curCol = nodeRef.current.props.col;
+      var targetRow = targetNodeRef.current.props.row;
+      var targetCol = targetNodeRef.current.props.col;
+
+      nodeRef.current.heuristic =
+        (curRow - targetRow) ** 2 + (curCol - targetCol) ** 2;
     }
   }
 }

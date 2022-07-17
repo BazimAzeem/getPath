@@ -41,6 +41,8 @@ class Node extends React.Component {
     this.isVisiting = false;
     this.weight = 2.5;
     this.distance = Infinity;
+    this.heuristic = 0;
+    this.cost = Infinity;
     this.predecessor = null;
 
     this.wasWall = false;
@@ -66,6 +68,8 @@ class Node extends React.Component {
     this.isVisiting = false;
     this.isVisited = false;
     this.distance = Infinity;
+    this.heuristic = 0;
+    this.cost = Infinity;
     this.predecessor = null;
     this.setState({ isPath: false, isVisited: false });
   }

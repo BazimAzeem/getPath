@@ -1,27 +1,3 @@
-export class PriorityQueue {
-  constructor(nodeRefGrid) {
-    this.nodeRefs = nodeRefGrid.flat();
-    this.updatePriorityQueue();
-  }
-
-  extractMinNodeRef() {
-    return this.nodeRefs.pop();
-  }
-
-  updatePriorityQueue() {
-    this.nodeRefs.sort((a, b) =>
-      a.current.distance < b.current.distance ? 1 : -1
-    );
-  }
-
-  printPriorityQueue() {
-    for (const nodeRef of this.nodeRefs) {
-      printNodeRef(nodeRef);
-    }
-  }
-}
-
-// Helper Functions
 export function getStartNodeRef(nodeRefGrid) {
   for (const nodeRefArray of nodeRefGrid) {
     for (const nodeRef of nodeRefArray) {
