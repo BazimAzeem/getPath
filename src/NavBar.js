@@ -39,7 +39,10 @@ class NavBar extends React.Component {
     this.isVisualizingMaze = false;
 
     this.wallAndWeightsToggleOptions = [
-      { content: <Node isWall={true} isDisabled={true}></Node>, value: "1" },
+      {
+        content: <Node isWall={true} isDisabled={true}></Node>,
+        value: "1",
+      },
       {
         content: <Node isSmallWeight={true} isDisabled={true}></Node>,
         value: "2",
@@ -56,9 +59,86 @@ class NavBar extends React.Component {
 
     this.legendEntrees = [
       {
-        node: <Node isWall={true} isDisabled={true}></Node>,
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isDisabled={true}></Node>{" "}
+          </div>
+        ),
+        title: "Regular Node",
+        description: "The default node with a weight of 2.5 lbs",
+      },
+
+      {
+        node: (
+          <div className="legend-entree__node">
+            <Node isWall={true} isDisabled={true}></Node>
+          </div>
+        ),
         title: "Wall Node",
         description: "A node with a weight of infinity (impenetrable)",
+      },
+      {
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isSmallWeight={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Small Weight Node",
+        description: "A node with a weight of 5 lbs",
+      },
+      {
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isMediumWeight={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Medium Weight Node",
+        description: "A node with a weight of 10 lbs",
+      },
+      {
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isLargeWeight={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Large Weight Node",
+        description: "A node with a weight of 25 lbs",
+      },
+      {
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isStart={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Start Node",
+        description: "The node where searching begins",
+      },
+      {
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isTarget={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Target Node",
+        description: "The node which is searched for",
+      },
+      {
+        node: (
+          <div className="display-node-border legend-entree__node">
+            <Node isVisited={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Visited Node",
+        description: "A node which has been visited during searching",
+      },
+      {
+        node: (
+          <div className="legend-entree__node">
+            <Node isPath={true} isDisabled={true}></Node>
+          </div>
+        ),
+        title: "Path Node",
+        description: "A node which is part of the shortest path",
       },
     ];
   }
@@ -171,33 +251,39 @@ class NavBar extends React.Component {
               </NavDropdown>
             </Nav>
             <ButtonToolbar className="toggle-button-group">
-              {this.wallAndWeightsToggleOptions.map((radio, idx) => (
-                <ToggleButton
-                  className={
-                    "toggle-button" +
-                    (this.state.wallAndWeightsToggleValue === radio.value
-                      ? " toggle-button-checked"
-                      : "")
-                  }
-                  key={idx}
-                  id={`radio-${idx}`}
-                  type="radio"
-                  name="radio"
-                  value={radio.value}
-                  checked={this.state.wallAndWeightsToggleValue === radio.value}
-                  onChange={(e) => {
-                    this.setState({
-                      wallAndWeightsToggleValue: e.currentTarget.value,
-                    });
-                    makeWall = radio.value == 1;
-                    makeSmallWeight = radio.value == 2;
-                    makeMediumWeight = radio.value == 3;
-                    makeLargeWeight = radio.value == 4;
-                  }}
-                >
-                  {radio.content}
-                </ToggleButton>
-              ))}
+              {this.wallAndWeightsToggleOptions.map(
+                (wallAndWeightsToggle, index) => (
+                  <ToggleButton
+                    className={
+                      "toggle-button" +
+                      (this.state.wallAndWeightsToggleValue ===
+                      wallAndWeightsToggle.value
+                        ? " toggle-button-checked"
+                        : "")
+                    }
+                    key={index}
+                    id={`radio-${index}`}
+                    type="radio"
+                    name="radio"
+                    value={wallAndWeightsToggle.value}
+                    checked={
+                      this.state.wallAndWeightsToggleValue ===
+                      wallAndWeightsToggle.value
+                    }
+                    onChange={(e) => {
+                      this.setState({
+                        wallAndWeightsToggleValue: e.currentTarget.value,
+                      });
+                      makeWall = wallAndWeightsToggle.value === "1";
+                      makeSmallWeight = wallAndWeightsToggle.value === "2";
+                      makeMediumWeight = wallAndWeightsToggle.value === "3";
+                      makeLargeWeight = wallAndWeightsToggle.value === "4";
+                    }}
+                  >
+                    {wallAndWeightsToggle.content}
+                  </ToggleButton>
+                )
+              )}
             </ButtonToolbar>
           </Offcanvas.Body>
         </Navbar.Offcanvas>{" "}
@@ -227,8 +313,18 @@ class NavBar extends React.Component {
             </Nav.Link>
             <Offcanvas.Title>Legend</Offcanvas.Title>
           </Offcanvas.Header>
-          <Offcanvas.Body>
-            I will be placing a description for each symbol here
+          <Offcanvas.Body className="legend-body">
+            {this.legendEntrees.map((legendEntree, index) => (
+              <article className="legend-entree">
+                <div className="legend-entree__heading">
+                  {legendEntree.node}
+                  <h5 className="legend-entree__title">{legendEntree.title}</h5>
+                </div>
+                <p className="legend-entree__description">
+                  {legendEntree.description}
+                </p>
+              </article>
+            ))}
           </Offcanvas.Body>
         </Offcanvas>
       </Navbar>
