@@ -1,5 +1,5 @@
-import { nodeRefGrid } from "../NodeGrid";
-import { isVisualizing } from "../NavBar";
+import { nodeRefGrid } from "../node grid/NodeGrid";
+import { isVisualizing } from "../ui/NavBar";
 
 var mazeTimeDelay = 75;
 

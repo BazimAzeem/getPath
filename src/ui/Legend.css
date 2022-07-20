@@ -1,0 +1,29 @@
+.legend-body {
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+}
+
+.legend-entree {
+  margin: 0.5rem 1.5rem;
+}
+
+.legend-entree__heading {
+  display: flex;
+  align-items: center;
+}
+
+.legend-entree__node {
+  margin-right: 0.5rem;
+}
+
+.legend-entree__title {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.legend-entree__description {
+  margin-top: 0.5rem;
+  opacity: 0.375;
+  font-size: 0.75rem;
+}

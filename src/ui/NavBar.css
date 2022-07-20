@@ -1,4 +1,4 @@
-@import "./constants.css";
+@import "../constants.css";
 
 .navbar,
 .navbar-toggler,
@@ -15,6 +15,7 @@
 
 .navbar {
   padding: 0;
+  z-index: 1000;
 }
 
 .navbar-toggler,
@@ -57,11 +58,20 @@ button {
   justify-content: start;
 }
 
+.offcanvas-title {
+  font-size: 1.75rem;
+}
+
+.offcanvas-body {
+  padding: 0;
+}
+
 .offcanvas {
   height: max-content;
 }
 
 .toggle-button-group {
+  margin: 0 1rem;
   display: flex;
   align-items: center;
   width: fit-content;
@@ -88,34 +98,4 @@ button {
   padding: 0.05rem;
   display: inline-block;
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-}
-
-.legend-body {
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
-}
-
-.legend-entree {
-  margin: 0.5rem 1.5rem;
-}
-
-.legend-entree__heading {
-  display: flex;
-  align-items: center;
-}
-
-.legend-entree__node {
-  margin-right: 0.5rem;
-}
-
-.legend-entree__title {
-  margin: 0;
-  font-size: 1.125rem;
-}
-
-.legend-entree__description {
-  margin-top: 0.5rem;
-  opacity: 0.375;
-  font-size: 0.75rem;
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import Legend from "./Legend";
 import {
   Navbar,
   Nav,
@@ -13,11 +14,12 @@ import {
   visualizePath,
   clearWallsAndWeights,
   clearSearchAndPath,
-} from "./NodeGrid";
-import Node from "./Node";
-import { visualizeMaze, primsMaze } from "./other/primsMaze";
-import { djikstra } from "./search algorithms/djikstra";
-import { aStar } from "./search algorithms/aStar";
+  resetStartAndTargetNodes,
+} from "../node grid/NodeGrid";
+import Node from "../node grid/Node";
+import { visualizeMaze, primsMaze } from "../other/primsMaze";
+import { djikstra } from "../search algorithms/djikstra";
+import { aStar } from "../search algorithms/aStar";
 import "./NavBar.css";
 
 // Global
@@ -27,7 +29,7 @@ export var makeSmallWeight = false;
 export var makeMediumWeight = false;
 export var makeLargeWeight = false;
 
-class NavBar extends React.Component {
+class UI extends React.Component {
   constructor(props) {
     super(props);
     this.algorithms = [
@@ -44,7 +46,6 @@ class NavBar extends React.Component {
     this.state = {
       isVisualizing: false,
       showCollapsed: false,
-      showLegend: false,
       wallAndWeightsToggleValue: "1",
       chosenAlgorithm: this.algorithms[0],
     };
@@ -70,91 +71,6 @@ class NavBar extends React.Component {
         value: "4",
       },
     ];
-
-    this.legendEntrees = [
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isDisabled={true}></Node>{" "}
-          </div>
-        ),
-        title: "Regular Node",
-        description: "The default node with a weight of 2.5 lbs",
-      },
-
-      {
-        node: (
-          <div className="legend-entree__node">
-            <Node isWall={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Wall Node",
-        description: "A node with a weight of infinity (impenetrable)",
-      },
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isSmallWeight={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Small Weight Node",
-        description: "A node with a weight of 5 lbs",
-      },
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isMediumWeight={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Medium Weight Node",
-        description: "A node with a weight of 10 lbs",
-      },
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isLargeWeight={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Large Weight Node",
-        description: "A node with a weight of 25 lbs",
-      },
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isStart={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Start Node",
-        description: "The node where searching begins",
-      },
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isTarget={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Target Node",
-        description: "The node which is searched for",
-      },
-      {
-        node: (
-          <div className="display-node-border legend-entree__node">
-            <Node isVisited={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Visited Node",
-        description: "A node which has been visited during searching",
-      },
-      {
-        node: (
-          <div className="legend-entree__node">
-            <Node isPath={true} isDisabled={true}></Node>
-          </div>
-        ),
-        title: "Path Node",
-        description: "A node which is part of the shortest path",
-      },
-    ];
   }
 
   setVisualizing() {
@@ -169,7 +85,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
-      <Navbar expand="sm" expanded={this.state.showCollapsed}>
+      <Navbar expand="md" expanded={this.state.showCollapsed}>
         <Navbar.Toggle
           onClick={() => {
             this.setState({ showCollapsed: !this.state.showCollapsed });
@@ -179,7 +95,7 @@ class NavBar extends React.Component {
         </Navbar.Toggle>
         <Navbar.Offcanvas
           placement="top"
-          show={this.state.showCollapsed}
+          show={this.state.showCollapsed ? 1 : 0}
           onHide={() => {
             this.setState({ showCollapsed: false });
           }}
@@ -202,6 +118,7 @@ class NavBar extends React.Component {
               >
                 {this.algorithms.map((algorithm, index) => (
                   <NavDropdown.Item
+                    as="button"
                     key={index}
                     onClick={() =>
                       this.setState({ chosenAlgorithm: algorithm })
@@ -210,17 +127,12 @@ class NavBar extends React.Component {
                     {algorithm.name}
                   </NavDropdown.Item>
                 ))}
-                <NavDropdown.Item>An algorithm</NavDropdown.Item>
-                <NavDropdown.Item>Another algorithm</NavDropdown.Item>
-                <NavDropdown.Item>
-                  An algorithm with a super looooong name
-                </NavDropdown.Item>
-                <NavDropdown.Item>Algo</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link
                 as="button"
                 disabled={isVisualizing && !this.isVisualizingSearch}
                 onClick={async () => {
+                  this.setState({ showCollapsed: false });
                   if (!this.state.isVisualizing) {
                     this.setVisualizing();
                     this.isVisualizingSearch = true;
@@ -246,6 +158,7 @@ class NavBar extends React.Component {
                 as="button"
                 disabled={isVisualizing}
                 onClick={async () => {
+                  this.setState({ showCollapsed: false });
                   this.setVisualizing();
                   this.isVisualizingMaze = true;
                   clearSearchAndPath();
@@ -263,9 +176,20 @@ class NavBar extends React.Component {
                   disabled={isVisualizing}
                   onClick={() => {
                     clearSearchAndPath();
+                    clearWallsAndWeights();
+                    resetStartAndTargetNodes();
                   }}
                 >
-                  Search
+                  All
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as="button"
+                  disabled={isVisualizing}
+                  onClick={() => {
+                    clearSearchAndPath();
+                  }}
+                >
+                  Search & Path
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   as="button"
@@ -314,50 +238,11 @@ class NavBar extends React.Component {
               )}
             </ButtonToolbar>
           </Offcanvas.Body>
-        </Navbar.Offcanvas>{" "}
-        <Nav.Link
-          as="button"
-          onClick={() => {
-            this.setState({ showLegend: true });
-          }}
-        >
-          <span className="material-symbols-outlined">help</span>
-        </Nav.Link>
-        <Offcanvas
-          placement="bottom"
-          show={this.state.showLegend}
-          onHide={() => {
-            this.setState({ showLegend: false });
-          }}
-        >
-          <Offcanvas.Header>
-            <Nav.Link
-              as="button"
-              onClick={() => {
-                this.setState({ showLegend: false });
-              }}
-            >
-              <span className="material-symbols-outlined">close</span>
-            </Nav.Link>
-            <Offcanvas.Title>Legend</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body className="legend-body">
-            {this.legendEntrees.map((legendEntree, index) => (
-              <article key={index} className="legend-entree">
-                <div className="legend-entree__heading">
-                  {legendEntree.node}
-                  <h5 className="legend-entree__title">{legendEntree.title}</h5>
-                </div>
-                <p className="legend-entree__description">
-                  {legendEntree.description}
-                </p>
-              </article>
-            ))}
-          </Offcanvas.Body>
-        </Offcanvas>
+        </Navbar.Offcanvas>
+        <Legend />
       </Navbar>
     );
   }
 }
 
-export default NavBar;
+export default UI;

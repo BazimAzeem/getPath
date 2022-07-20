@@ -6,7 +6,7 @@ import {
   makeSmallWeight,
   makeMediumWeight,
   makeLargeWeight,
-} from "./NavBar";
+} from "../ui/NavBar";
 
 // Global
 var isMakingWall = false;

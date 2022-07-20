@@ -1,7 +1,7 @@
 import React from "react";
 import Node from "./Node";
 import "./NodeGrid.css";
-import { isVisualizing } from "./NavBar";
+import { isVisualizing } from "../ui/NavBar";
 
 var [rows, cols] = getNodeGridDimensions();
 export var nodeRefGrid = getNodeRefGrid(rows, cols);
@@ -167,6 +167,27 @@ export function clearSearchAndPath() {
   for (const nodeRefArray of nodeRefGrid) {
     for (const nodeRef of nodeRefArray) {
       nodeRef.current.resetVisitedAndPath();
+    }
+  }
+}
+
+export function resetStartAndTargetNodes() {
+  let startRow = parseInt(rows / 2);
+  let startCol = parseInt(cols / 4);
+  let targetRow = parseInt(rows / 2);
+  let targetCol = parseInt((3 * cols) / 4);
+
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      {
+        var row = nodeRef.current.props.row;
+        var col = nodeRef.current.props.col;
+
+        let isStart = row === startRow && col === startCol;
+        let isTarget = row === targetRow && col === targetCol;
+
+        nodeRef.current.setState({ isStart: isStart, isTarget: isTarget });
+      }
     }
   }
 }

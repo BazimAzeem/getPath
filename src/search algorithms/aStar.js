@@ -70,15 +70,16 @@ class PriorityQueue {
 }
 
 function fillHeuristic(targetNodeRef, nodeRefGrid) {
+  var targetRow = targetNodeRef.current.props.row;
+  var targetCol = targetNodeRef.current.props.col;
+
   for (const nodeRefArray of nodeRefGrid) {
     for (const nodeRef of nodeRefArray) {
       var curRow = nodeRef.current.props.row;
       var curCol = nodeRef.current.props.col;
-      var targetRow = targetNodeRef.current.props.row;
-      var targetCol = targetNodeRef.current.props.col;
 
       nodeRef.current.heuristic =
-        (curRow - targetRow) ** 2 + (curCol - targetCol) ** 2;
+        Math.sqrt((curRow - targetRow) ** 2 + (curCol - targetCol) ** 2) * 2.5;
     }
   }
 }
