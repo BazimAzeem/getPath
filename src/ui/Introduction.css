@@ -1,0 +1,52 @@
+@import "../constants.css";
+
+.modal-content {
+  background-color: var(--primary-dark-color);
+  color: var(--primary-light-color) !important;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding: 0;
+}
+
+.modal-footer {
+  border-top: none;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.modal-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.modal-button {
+  background-color: inherit;
+  border: none;
+  margin: 1rem;
+  padding: 0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.modal-button:hover {
+  color: var(--secondary-accent-color);
+  background-color: inherit;
+}
+
+.modal-button:focus {
+  background-color: inherit;
+}
+
+.modal-button-icon {
+  padding: 0;
+  margin: 0;
+  font-size: 1.1rem;
+}

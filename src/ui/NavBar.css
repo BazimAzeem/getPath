@@ -44,6 +44,19 @@ button {
   width: fit-content;
 }
 
+#visualize-button {
+  margin: 0.75rem;
+  padding: 0.25rem;
+  background-color: var(--secondary-accent-color);
+  color: var(--primary-dark-color) !important;
+  border-radius: 0.2rem;
+}
+
+#visualize-button:hover {
+  background-color: var(--primary-dark-color);
+  color: var(--secondary-accent-color) !important;
+}
+
 .dropdown {
   margin: auto 0;
 }

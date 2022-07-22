@@ -1,6 +1,6 @@
 import { getStartNodeRef, getNodeRefChildren, printNodeRef } from "./helper";
 
-export function djikstra(nodeRefGrid) {
+export function dijkstra(nodeRefGrid) {
   var startNodeRef = getStartNodeRef(nodeRefGrid);
   startNodeRef.current.distance = 0;
   var pq = new PriorityQueue(nodeRefGrid);
@@ -35,7 +35,7 @@ export function djikstra(nodeRefGrid) {
   return visitedNodeRefs;
 }
 
-export default djikstra;
+export default dijkstra;
 
 class PriorityQueue {
   constructor(nodeRefGrid) {

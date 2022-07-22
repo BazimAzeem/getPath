@@ -101,25 +101,19 @@ class Legend extends React.Component {
       <div>
         <Nav.Link
           as="button"
-          onClick={() => {
-            this.setState({ showLegend: true });
-          }}
+          onClick={() => this.setState({ showLegend: true })}
         >
           <span className="material-symbols-outlined">help</span>
         </Nav.Link>
         <Offcanvas
           placement="bottom"
           show={this.state.showLegend}
-          onHide={() => {
-            this.setState({ showLegend: false });
-          }}
+          onHide={() => this.setState({ showLegend: false })}
         >
           <Offcanvas.Header>
             <Nav.Link
               as="button"
-              onClick={() => {
-                this.setState({ showLegend: false });
-              }}
+              onClick={() => this.setState({ showLegend: false })}
             >
               <span className="material-symbols-outlined">close</span>
             </Nav.Link>

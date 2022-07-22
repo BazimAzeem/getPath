@@ -13,9 +13,9 @@
   --secondary-color: #364145;
   --primary-accent-color: #1b716f;
   --secondary-accent-color: #a3f7bf;
-  --tertiary-accent-color: #fff41c;
-  --quaternary-accent-color: #e9f7a3;
-  --primary-light-color: #e7f3fc;
+  --tertiary-accent-color: #1cffb0;
+  --quaternary-accent-color: #a3eff7;
+  --primary-light-color: #eaf6ff;
   --primary-dark-color: #171f26;
   --weight-font-color: var(--primary-light-color);
   --start-and-target-font-color: var(--secondary-accent-color);

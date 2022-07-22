@@ -142,7 +142,8 @@
 }
 
 .node-is-path {
-  animation: isPathNodeAnimation 1.5s forwards;
+  animation: isPathNodeAnimation 1.5s forwards,
+    oscillatePathNodeAnimation 2.5s infinite;
 }
 
 @keyframes isPathNodeAnimation {
@@ -166,5 +167,19 @@
     transform: scale(1.0625);
     background-color: var(--tertiary-accent-color);
     color: var(--path-font-color);
+  }
+}
+
+@keyframes oscillatePathNodeAnimation {
+  50% {
+    background-color: var(--tertiary-accent-color);
+  }
+
+  75% {
+    background-color: var(--quaternary-accent-color);
+  }
+
+  100% {
+    background-color: var(--tertiary-accent-color);
   }
 }
