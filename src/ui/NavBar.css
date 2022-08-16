@@ -16,6 +16,7 @@
 .navbar {
   padding: 0;
   z-index: 1000;
+  display: flex;
 }
 
 .navbar-toggler,
@@ -41,7 +42,6 @@ button {
   display: flex;
   align-items: center;
   text-align: center;
-  width: fit-content;
 }
 
 #visualize-button {
@@ -55,6 +55,11 @@ button {
 #visualize-button:hover {
   background-color: var(--primary-dark-color);
   color: var(--secondary-accent-color) !important;
+}
+
+.options {
+  background-color: pink !important;
+  max-width: fit-content;
 }
 
 .dropdown {

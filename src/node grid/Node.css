@@ -18,6 +18,22 @@
   user-select: none;
 }
 
+.is-mouse-over {
+  animation: isMouseOverAnimation 0.1s forwards;
+}
+
+@keyframes isMouseOverAnimation {
+  0% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(0.925);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
 .node-is-start {
   color: var(--start-and-target-font-color);
 }
@@ -42,11 +58,9 @@
   0% {
     transform: scale(0.25);
   }
-
   75% {
     transform: scale(1.05);
   }
-
   100% {
     transform: scale(1);
   }
@@ -63,16 +77,13 @@
     transform: scale(0);
     border-radius: 100%;
   }
-
   50% {
     background-color: var(--primary-light-color);
   }
-
   75% {
     transform: scale(1.1);
     background-color: var(--primary-light-color);
   }
-
   100% {
     transform: scale(1.0625);
     background-color: var(--primary-light-color);
@@ -105,11 +116,9 @@
   25% {
     font-size: 0;
   }
-
   75% {
     font-size: calc(var(--weight-font-size) * 1.1);
   }
-
   100% {
     font-size: var(--weight-font-size);
   }
@@ -125,16 +134,13 @@
     background-color: initial;
     border-radius: 100%;
   }
-
   50% {
     background-color: var(--secondary-accent-color);
   }
-
   75% {
     transform: scale(1.1);
     background-color: var(--secondary-accent-color);
   }
-
   100% {
     transform: scale(1);
     background-color: var(--primary-accent-color);
@@ -143,7 +149,7 @@
 
 .node-is-path {
   animation: isPathNodeAnimation 1.5s forwards,
-    oscillatePathNodeAnimation 2.5s infinite;
+    oscillatePathNodeAnimation 3s 3s infinite;
 }
 
 @keyframes isPathNodeAnimation {
@@ -153,16 +159,13 @@
     color: var(--path-font-color);
     border-radius: 100%;
   }
-
   50% {
     background-color: var(--quaternary-accent-color);
   }
-
   75% {
     transform: scale(1.1);
     background-color: var(--quaternary-accent-color);
   }
-
   100% {
     transform: scale(1.0625);
     background-color: var(--tertiary-accent-color);
@@ -171,15 +174,16 @@
 }
 
 @keyframes oscillatePathNodeAnimation {
-  50% {
+  0% {
+    transform: scale(1.0625);
     background-color: var(--tertiary-accent-color);
   }
-
-  75% {
+  25% {
+    transform: scale(1.1);
     background-color: var(--quaternary-accent-color);
   }
-
-  100% {
+  50% {
+    transform: scale(1.0625);
     background-color: var(--tertiary-accent-color);
   }
 }

@@ -34,6 +34,7 @@ class Node extends React.Component {
       isSmallWeight: this.props.isSmallWeight,
       isMediumWeight: this.props.isMediumWeight,
       isLargeWeight: this.props.isLargeWeight,
+      isMouseOver: false,
     };
     this.defaultState = this.state;
 
@@ -178,6 +179,7 @@ class Node extends React.Component {
       } else if (isMakingWall && !(this.state.isStart || this.state.isTarget)) {
         this.toggleWall();
       }
+      this.setState({ isMouseOver: true });
     }
   }
 
@@ -185,17 +187,36 @@ class Node extends React.Component {
     if (!this.props.isDisabled) {
       if (isMovingStart) {
         this.setState({ isStart: false });
-        if (this.wasWall) this.toggleWall();
-        else if (this.wasSmallWeight) this.toggleSmallWeight();
-        else if (this.wasMediumWeight) this.toggleMediumWeight();
-        else if (this.wasLargeWeight) this.toggleLargeWeight();
+        if (this.wasWall) {
+          this.toggleWall();
+          this.wasWall = false;
+        } else if (this.wasSmallWeight) {
+          this.toggleSmallWeight();
+          this.wasSmallWeight = false;
+        } else if (this.wasMediumWeight) {
+          this.toggleMediumWeight();
+          this.wasMediumWeight = false;
+        } else if (this.wasLargeWeight) {
+          this.toggleLargeWeight();
+          this.wasLargeWeight = false;
+        }
       } else if (isMovingTarget) {
         this.setState({ isTarget: false });
-        if (this.wasWall) this.toggleWall();
-        else if (this.wasSmallWeight) this.toggleSmallWeight();
-        else if (this.wasMediumWeight) this.toggleMediumWeight();
-        else if (this.wasLargeWeight) this.toggleLargeWeight();
+        if (this.wasWall) {
+          this.toggleWall();
+          this.wasWall = false;
+        } else if (this.wasSmallWeight) {
+          this.toggleSmallWeight();
+          this.wasSmallWeight = false;
+        } else if (this.wasMediumWeight) {
+          this.toggleMediumWeight();
+          this.wasMediumWeight = false;
+        } else if (this.wasLargeWeight) {
+          this.toggleLargeWeight();
+          this.wasLargeWeight = false;
+        }
       }
+      this.setState({ isMouseOver: false });
     }
   }
 
@@ -216,6 +237,7 @@ class Node extends React.Component {
         ref={this.ref}
         className={
           "node" +
+          (this.state.isMouseOver ? " is-mouse-over" : "") +
           (this.state.isStart ? " node-is-start" : "") +
           (this.state.isTarget ? " node-is-target" : "") +
           (this.state.isWall ? " node-is-wall" : "") +

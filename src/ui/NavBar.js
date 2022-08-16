@@ -98,6 +98,7 @@ class UI extends React.Component {
           </Navbar.Toggle>
           <Navbar.Offcanvas
             placement="top"
+            className="options"
             show={this.state.showCollapsed ? 1 : 0}
             onHide={() => this.setState({ showCollapsed: false })}
           >
@@ -127,38 +128,6 @@ class UI extends React.Component {
                     </NavDropdown.Item>
                   ))}
                 </NavDropdown>
-                <Nav.Link
-                  as="button"
-                  id="visualize-button"
-                  disabled={isVisualizing && !this.isVisualizingSearch}
-                  onClick={async () => {
-                    this.setState({ showCollapsed: false });
-                    if (!this.state.isVisualizing) {
-                      this.setVisualizing();
-                      this.isVisualizingSearch = true;
-                      clearSearchAndPath();
-                      var targetNodeRef = await visualizeSearch(
-                        this.state.chosenAlgorithm.function
-                      );
-                      if (targetNodeRef.current.predecessor) {
-                        console.log(targetNodeRef);
-                        await visualizePath(targetNodeRef);
-                      } else {
-                        this.setState({ showNoPathError: true });
-                      }
-                      this.resetVisualizing();
-                      this.isVisualizingSearch = false;
-                    } else {
-                      this.resetVisualizing();
-                      this.isVisualizingSearch = false;
-                      setTimeout(() => {
-                        clearSearchAndPath();
-                      }, 20);
-                    }
-                  }}
-                >
-                  {!this.isVisualizingSearch ? "Visualize" : "Cancel"}
-                </Nav.Link>
                 <Nav.Link
                   as="button"
                   disabled={isVisualizing}
@@ -244,7 +213,39 @@ class UI extends React.Component {
               </ButtonToolbar>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-          <Legend />
+          <Nav.Link
+            as="button"
+            id="visualize-button"
+            disabled={isVisualizing && !this.isVisualizingSearch}
+            onClick={async () => {
+              this.setState({ showCollapsed: false });
+              if (!this.state.isVisualizing) {
+                this.setVisualizing();
+                this.isVisualizingSearch = true;
+                clearSearchAndPath();
+                var targetNodeRef = await visualizeSearch(
+                  this.state.chosenAlgorithm.function
+                );
+                if (targetNodeRef.current.predecessor) {
+                  console.log(targetNodeRef);
+                  await visualizePath(targetNodeRef);
+                } else {
+                  this.setState({ showNoPathError: true });
+                }
+                this.resetVisualizing();
+                this.isVisualizingSearch = false;
+              } else {
+                this.resetVisualizing();
+                this.isVisualizingSearch = false;
+                setTimeout(() => {
+                  clearSearchAndPath();
+                }, 20);
+              }
+            }}
+          >
+            {!this.isVisualizingSearch ? "Search" : "Cancel"}
+          </Nav.Link>
+          <Legend className="legend"></Legend>
         </Navbar>
         <Modal
           show={this.state.showNoPathError}

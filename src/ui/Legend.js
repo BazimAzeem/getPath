@@ -98,7 +98,7 @@ class Legend extends React.Component {
 
   render() {
     return (
-      <div>
+      <div classsName="legend">
         <Nav.Link
           as="button"
           onClick={() => this.setState({ showLegend: true })}
