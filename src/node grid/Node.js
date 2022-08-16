@@ -257,9 +257,6 @@ class Node extends React.Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         onMouseUp={this.handleMouseUp}
-        onClick={() => {
-          console.log(this.props, this.state);
-        }}
       >
         {this.state.isStart ? (
           <span className="material-symbols-outlined start">

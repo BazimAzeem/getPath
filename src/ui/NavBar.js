@@ -50,7 +50,10 @@ class UI extends React.Component {
       showNoPathError: false,
       wallAndWeightsToggleValue: "1",
       chosenAlgorithm: this.algorithms[0],
+      isDesktop: false,
     };
+
+    this.updatePredicate = this.updatePredicate.bind(this);
 
     this.isVisualizingSearch = false;
     this.isVisualizingMaze = false;
@@ -85,134 +88,152 @@ class UI extends React.Component {
     isVisualizing = false;
   }
 
+  componentDidMount() {
+    this.updatePredicate();
+    window.addEventListener("resize", this.updatePredicate);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updatePredicate);
+  }
+
+  updatePredicate() {
+    this.setState({ isDesktop: window.innerWidth >= 768 });
+  }
+
   render() {
     return (
       <>
         <Navbar expand="md" expanded={this.state.showCollapsed}>
-          <Navbar.Toggle
-            onClick={() =>
-              this.setState({ showCollapsed: !this.state.showCollapsed })
-            }
-          >
-            <span className="material-symbols-outlined">menu</span>
-          </Navbar.Toggle>
-          <Navbar.Offcanvas
-            placement="top"
-            className="options"
-            show={this.state.showCollapsed ? 1 : 0}
-            onHide={() => this.setState({ showCollapsed: false })}
-          >
-            <Offcanvas.Header>
-              <Nav.Link
-                as="button"
-                onClick={() => this.setState({ showCollapsed: false })}
-              >
-                <span className="material-symbols-outlined">close</span>
-              </Nav.Link>
-              <Offcanvas.Title>Options</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav>
-                <NavDropdown
-                  title={"Algorithm: " + this.state.chosenAlgorithm.name}
-                >
-                  {this.algorithms.map((algorithm, index) => (
-                    <NavDropdown.Item
-                      as="button"
-                      key={index}
-                      onClick={() =>
-                        this.setState({ chosenAlgorithm: algorithm })
-                      }
-                    >
-                      {algorithm.name}
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
+          <div className="nav-left">
+            <Navbar.Toggle
+              onClick={() =>
+                this.setState({ showCollapsed: !this.state.showCollapsed })
+              }
+            >
+              <span className="material-symbols-outlined">menu</span>
+            </Navbar.Toggle>
+            <Navbar.Offcanvas
+              placement="top"
+              show={this.state.showCollapsed ? 1 : 0}
+              onHide={() => this.setState({ showCollapsed: false })}
+            >
+              <Offcanvas.Header>
                 <Nav.Link
                   as="button"
-                  disabled={isVisualizing}
-                  onClick={async () => {
-                    this.setState({ showCollapsed: false });
-                    this.setVisualizing();
-                    this.isVisualizingMaze = true;
-                    clearSearchAndPath();
-                    clearWallsAndWeights();
-                    await visualizeMaze(primsMaze);
-                    this.resetVisualizing();
-                    this.isVisualizingMaze = false;
-                  }}
+                  onClick={() => this.setState({ showCollapsed: false })}
                 >
-                  Maze
+                  <span className="material-symbols-outlined">close</span>
                 </Nav.Link>
-                <NavDropdown title="Clear">
-                  <NavDropdown.Item
+                <Offcanvas.Title>Options</Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav>
+                  <NavDropdown
+                    title={"Algorithm: " + this.state.chosenAlgorithm.name}
+                  >
+                    {this.algorithms.map((algorithm, index) => (
+                      <NavDropdown.Item
+                        as="button"
+                        key={index}
+                        onClick={() =>
+                          this.setState({ chosenAlgorithm: algorithm })
+                        }
+                      >
+                        {algorithm.name}
+                      </NavDropdown.Item>
+                    ))}
+                  </NavDropdown>
+                  <Nav.Link
                     as="button"
                     disabled={isVisualizing}
-                    onClick={() => {
+                    onClick={async () => {
+                      this.setState({ showCollapsed: false });
+                      this.setVisualizing();
+                      this.isVisualizingMaze = true;
                       clearSearchAndPath();
                       clearWallsAndWeights();
-                      resetStartAndTargetNodes();
+                      await visualizeMaze(primsMaze);
+                      this.resetVisualizing();
+                      this.isVisualizingMaze = false;
                     }}
                   >
-                    All
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as="button"
-                    disabled={isVisualizing}
-                    onClick={() => {
-                      clearSearchAndPath();
-                    }}
-                  >
-                    Search & Path
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as="button"
-                    disabled={isVisualizing}
-                    onClick={() => {
-                      clearWallsAndWeights();
-                    }}
-                  >
-                    Walls & Weights
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-              <ButtonToolbar className="toggle-button-group">
-                {this.wallAndWeightsToggleOptions.map(
-                  (wallAndWeightsToggle, index) => (
-                    <ToggleButton
-                      className={
-                        "toggle-button" +
-                        (this.state.wallAndWeightsToggleValue ===
-                        wallAndWeightsToggle.value
-                          ? " toggle-button-checked"
-                          : "")
-                      }
-                      key={index}
-                      id={`radio-${index}`}
-                      type="radio"
-                      name="radio"
-                      value={wallAndWeightsToggle.value}
-                      checked={
-                        this.state.wallAndWeightsToggleValue ===
-                        wallAndWeightsToggle.value
-                      }
-                      onChange={(e) => {
-                        this.setState({
-                          wallAndWeightsToggleValue: e.currentTarget.value,
-                        });
-                        makeWall = wallAndWeightsToggle.value === "1";
-                        makeSmallWeight = wallAndWeightsToggle.value === "2";
-                        makeMediumWeight = wallAndWeightsToggle.value === "3";
-                        makeLargeWeight = wallAndWeightsToggle.value === "4";
-                      }}
-                    >
-                      {wallAndWeightsToggle.content}
-                    </ToggleButton>
-                  )
-                )}
-              </ButtonToolbar>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
+                    Maze
+                  </Nav.Link>
+                  {!this.state.isDesktop ? (
+                    <NavDropdown title="Clear">
+                      <NavDropdown.Item
+                        as="button"
+                        disabled={isVisualizing}
+                        onClick={() => {
+                          clearSearchAndPath();
+                          clearWallsAndWeights();
+                          resetStartAndTargetNodes();
+                        }}
+                      >
+                        All
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as="button"
+                        disabled={isVisualizing}
+                        onClick={() => {
+                          clearSearchAndPath();
+                        }}
+                      >
+                        Search & Path
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as="button"
+                        disabled={isVisualizing}
+                        onClick={() => {
+                          clearWallsAndWeights();
+                        }}
+                      >
+                        Walls & Weights
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  ) : (
+                    <></>
+                  )}
+                </Nav>
+                <ButtonToolbar className="toggle-button-group">
+                  {this.wallAndWeightsToggleOptions.map(
+                    (wallAndWeightsToggle, index) => (
+                      <ToggleButton
+                        className={
+                          "toggle-button" +
+                          (this.state.wallAndWeightsToggleValue ===
+                          wallAndWeightsToggle.value
+                            ? " toggle-button-checked"
+                            : "")
+                        }
+                        key={index}
+                        id={`radio-${index}`}
+                        type="radio"
+                        name="radio"
+                        value={wallAndWeightsToggle.value}
+                        checked={
+                          this.state.wallAndWeightsToggleValue ===
+                          wallAndWeightsToggle.value
+                        }
+                        onChange={(e) => {
+                          this.setState({
+                            wallAndWeightsToggleValue: e.currentTarget.value,
+                          });
+                          makeWall = wallAndWeightsToggle.value === "1";
+                          makeSmallWeight = wallAndWeightsToggle.value === "2";
+                          makeMediumWeight = wallAndWeightsToggle.value === "3";
+                          makeLargeWeight = wallAndWeightsToggle.value === "4";
+                        }}
+                      >
+                        {wallAndWeightsToggle.content}
+                      </ToggleButton>
+                    )
+                  )}
+                </ButtonToolbar>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </div>
           <Nav.Link
             as="button"
             id="visualize-button"
@@ -245,7 +266,44 @@ class UI extends React.Component {
           >
             {!this.isVisualizingSearch ? "Search" : "Cancel"}
           </Nav.Link>
-          <Legend className="legend"></Legend>
+          <div className="nav-right">
+            {this.state.isDesktop ? (
+              <NavDropdown title="Clear" align="end">
+                <NavDropdown.Item
+                  as="button"
+                  disabled={isVisualizing}
+                  onClick={() => {
+                    clearSearchAndPath();
+                    clearWallsAndWeights();
+                    resetStartAndTargetNodes();
+                  }}
+                >
+                  All
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as="button"
+                  disabled={isVisualizing}
+                  onClick={() => {
+                    clearSearchAndPath();
+                  }}
+                >
+                  Search & Path
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as="button"
+                  disabled={isVisualizing}
+                  onClick={() => {
+                    clearWallsAndWeights();
+                  }}
+                >
+                  Walls & Weights
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <></>
+            )}
+            <Legend className="legend"></Legend>
+          </div>
         </Navbar>
         <Modal
           show={this.state.showNoPathError}

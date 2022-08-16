@@ -98,8 +98,9 @@ class Legend extends React.Component {
 
   render() {
     return (
-      <div classsName="legend">
+      <div>
         <Nav.Link
+          className="legend-button"
           as="button"
           onClick={() => this.setState({ showLegend: true })}
         >
@@ -118,6 +119,21 @@ class Legend extends React.Component {
               <span className="material-symbols-outlined">close</span>
             </Nav.Link>
             <Offcanvas.Title>Legend</Offcanvas.Title>
+            <div className="contact-links">
+              <Nav.Link
+                style={{ marginRight: 0 }}
+                href="https://github.com/BazimAzeem/getPath/tree/master/src"
+                target="_blank"
+              >
+                <ion-icon name="logo-github"></ion-icon>
+              </Nav.Link>
+              <Nav.Link
+                href="https://www.linkedin.com/in/bazim-azeem-2970b3202/"
+                target="_blank"
+              >
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </Nav.Link>
+            </div>
           </Offcanvas.Header>
           <Offcanvas.Body className="legend-body">
             {this.legendEntrees.map((legendEntree, index) => (

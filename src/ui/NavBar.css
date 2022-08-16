@@ -16,7 +16,14 @@
 .navbar {
   padding: 0;
   z-index: 1000;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: minmax(max-content, 1fr) max-content 1fr;
+}
+
+.nav-right {
   display: flex;
+  justify-content: flex-end;
 }
 
 .navbar-toggler,
@@ -55,11 +62,6 @@ button {
 #visualize-button:hover {
   background-color: var(--primary-dark-color);
   color: var(--secondary-accent-color) !important;
-}
-
-.options {
-  background-color: pink !important;
-  max-width: fit-content;
 }
 
 .dropdown {
