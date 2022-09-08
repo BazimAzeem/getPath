@@ -6,7 +6,9 @@ import {
   makeSmallWeight,
   makeMediumWeight,
   makeLargeWeight,
+  hasVisualizedSearch,
 } from "../ui/NavBar";
+import { clearSearchAndPath } from "./NodeGrid";
 
 // Global
 var isMakingWall = false;
@@ -42,6 +44,7 @@ class Node extends React.Component {
     this.isVisiting = false;
     this.weight = 2.5;
     this.distance = Infinity;
+    this.distanceBack = Infinity;
     this.heuristic = 0;
     this.cost = Infinity;
     this.predecessor = null;
@@ -61,6 +64,7 @@ class Node extends React.Component {
     this.isVisited = false;
     this.weight = 2.5;
     this.distance = Infinity;
+    this.distanceBack = Infinity;
     this.predecessor = null;
     this.setState(this.defaultState);
   }
@@ -69,6 +73,7 @@ class Node extends React.Component {
     this.isVisiting = false;
     this.isVisited = false;
     this.distance = Infinity;
+    this.distanceBack = Infinity;
     this.heuristic = 0;
     this.cost = Infinity;
     this.predecessor = null;
@@ -133,6 +138,7 @@ class Node extends React.Component {
     if (!this.props.isDisabled) {
       if (isMovingStart) {
         this.setState({ isStart: true });
+        if (hasVisualizedSearch) clearSearchAndPath();
         if (this.state.isWall) {
           this.toggleWall();
           this.wasWall = true;
@@ -148,6 +154,7 @@ class Node extends React.Component {
         }
       } else if (isMovingTarget) {
         this.setState({ isTarget: true });
+        if (hasVisualizedSearch) clearSearchAndPath();
         if (this.state.isWall) {
           this.toggleWall();
           this.wasWall = true;
@@ -250,13 +257,24 @@ class Node extends React.Component {
           (this.state.isLargeWeight
             ? " node-is-weight node-is-large-weight"
             : "") +
-          (this.state.isVisited ? " node-is-visited" : "") +
-          (this.state.isPath ? " node-is-path" : "")
+          (this.state.isVisited
+            ? isVisualizing
+              ? " node-is-visited node-is-visited-animation"
+              : " node-is-visited"
+            : "") +
+          (this.state.isPath
+            ? isVisualizing
+              ? " node-is-path node-is-path-animation"
+              : " node-is-path"
+            : "")
         }
         onMouseDown={this.handleMouseDown}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         onMouseUp={this.handleMouseUp}
+        onClick={() => {
+          console.log(this.state, this.weight);
+        }}
       >
         {this.state.isStart ? (
           <span className="material-symbols-outlined start">

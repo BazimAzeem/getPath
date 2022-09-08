@@ -14,6 +14,7 @@
 }
 
 .navbar {
+  box-shadow: 0 2px 2px -2px var(--secondary-color);
   padding: 0;
   z-index: 1000;
   display: grid;
@@ -52,6 +53,7 @@ button {
 }
 
 #visualize-button {
+  text-transform: none;
   margin: 0.75rem;
   padding: 0.25rem;
   background-color: var(--secondary-accent-color);

@@ -1,8 +1,16 @@
-import { getStartNodeRef, getNodeRefChildren, printNodeRef } from "./helper";
+import {
+  getStartNodeRef,
+  getTargetNodeRef,
+  getNodeRefChildren,
+  printNodeRef,
+} from "./helper";
 
-export function dijkstra(nodeRefGrid) {
+export function greedyBFS(nodeRefGrid) {
+  var targetNodeRef = getTargetNodeRef(nodeRefGrid);
+  fillHeuristic(targetNodeRef, nodeRefGrid);
+
   var startNodeRef = getStartNodeRef(nodeRefGrid);
-  startNodeRef.current.distance = 0;
+  startNodeRef.current.cost = startNodeRef.current.heuristic;
   var pq = new PriorityQueue(nodeRefGrid);
 
   var visitedNodeRefs = [];
@@ -10,8 +18,7 @@ export function dijkstra(nodeRefGrid) {
     var minNodeRef = pq.extractMinNodeRef();
     minNodeRef.current.isVisited = true;
 
-    if (minNodeRef.current.distance === Infinity)
-      return [visitedNodeRefs, null];
+    if (minNodeRef.current.cost === Infinity) return [visitedNodeRefs, null];
     visitedNodeRefs.push(minNodeRef);
 
     if (minNodeRef.current.state.isTarget)
@@ -19,13 +26,8 @@ export function dijkstra(nodeRefGrid) {
 
     var minNodeRefChildren = getNodeRefChildren(minNodeRef, nodeRefGrid);
     for (const minNodeRefChild of minNodeRefChildren) {
-      if (
-        !minNodeRefChild.current.isVisited &&
-        minNodeRefChild.current.distance >
-          minNodeRef.current.distance + minNodeRefChild.current.weight
-      ) {
-        minNodeRefChild.current.distance =
-          minNodeRef.current.distance + minNodeRefChild.current.weight;
+      if (!minNodeRefChild.current.isVisited) {
+        minNodeRefChild.current.cost = minNodeRefChild.current.heuristic;
         minNodeRefChild.current.predecessor = minNodeRef;
       }
     }
@@ -35,9 +37,11 @@ export function dijkstra(nodeRefGrid) {
   return [visitedNodeRefs, null];
 }
 
-export default dijkstra;
+export default greedyBFS;
 
 function getPathNodeRefs(targetNodeRef) {
+  if (!targetNodeRef.current.predecessor) return null;
+
   var pathNodeRefs = [];
   var currentNodeRef = targetNodeRef;
   while (!currentNodeRef.current.state.isStart) {
@@ -48,6 +52,22 @@ function getPathNodeRefs(targetNodeRef) {
   pathNodeRefs.reverse();
 
   return pathNodeRefs;
+}
+
+function fillHeuristic(targetNodeRef, nodeRefGrid) {
+  var targetRow = targetNodeRef.current.props.row;
+  var targetCol = targetNodeRef.current.props.col;
+
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      var curRow = nodeRef.current.props.row;
+      var curCol = nodeRef.current.props.col;
+
+      nodeRef.current.heuristic =
+        Math.sqrt((curRow - targetRow) ** 2 + (curCol - targetCol) ** 2) * 2.5 +
+        nodeRef.current.weight;
+    }
+  }
 }
 
 class PriorityQueue {
@@ -61,9 +81,7 @@ class PriorityQueue {
   }
 
   updatePriorityQueue() {
-    this.nodeRefs.sort((a, b) =>
-      a.current.distance < b.current.distance ? 1 : -1
-    );
+    this.nodeRefs.sort((a, b) => (a.current.cost < b.current.cost ? 1 : -1));
   }
 
   printPriorityQueue() {

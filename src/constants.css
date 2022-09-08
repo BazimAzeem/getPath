@@ -14,10 +14,12 @@
   --primary-accent-color: #1b716f;
   --secondary-accent-color: #a3f7bf;
   --tertiary-accent-color: #00ffa6;
-  --quaternary-accent-color: #a3eff7;
+  --quaternary-accent-color: #45ffda;
   --primary-light-color: #eaf6ff;
   --primary-dark-color: #171f26;
   --weight-font-color: var(--primary-light-color);
   --start-and-target-font-color: var(--secondary-accent-color);
   --path-font-color: var(--primary-color);
+  --modal-body-font-color: #eaf6ff94;
 }
+/*0b0d12*/

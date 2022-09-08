@@ -1,4 +1,7 @@
+@import "./constants.css";
+
 body {
+  background-color: var(--primary-dark-color);
   overflow: hidden;
 }
 

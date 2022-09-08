@@ -14,7 +14,7 @@ class Legend extends React.Component {
       {
         node: (
           <div className="display-node-border legend-entree__node">
-            <Node isDisabled={true}></Node>{" "}
+            <Node isDisabled={true}></Node>
           </div>
         ),
         title: "Regular Node",

@@ -14,6 +14,14 @@
   padding: 0;
 }
 
+.modal-title {
+  text-transform: none;
+  padding: 0;
+  margin: 0;
+  margin: 1rem;
+  color: var(--secondary-accent-color);
+}
+
 .modal-footer {
   border-top: none;
   justify-content: space-between;
@@ -21,14 +29,17 @@
 }
 
 .modal-body {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0;
+  margin: 1rem;
+  margin-top: 0;
+  color: var(--modal-body-font-color);
 }
 
 .modal-button {
   background-color: inherit;
   border: none;
   margin: 1rem;
+  margin-top: -0.75rem;
   padding: 0;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -49,4 +60,25 @@
   padding: 0;
   margin: 0;
   font-size: 1.1rem;
+}
+
+.intro-page-number {
+  margin: 1rem;
+  font-size: 1rem;
+}
+
+.intro-body {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.75rem;
+}
+
+.intro-body-bold {
+  color: var(--primary-light-color);
+}
+
+.inline-node {
+  transform: scale(0.8);
+  margin: 0;
+  /* vertical-align: middle; */
 }

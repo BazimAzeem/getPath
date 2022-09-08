@@ -5,7 +5,7 @@ var mazeTimeDelay = 75;
 
 export async function visualizeMaze(mazeAlgorithm) {
   var visitedNodeRefDiagonals = mazeAlgorithm(nodeRefGrid);
-  var visitedNodeRefDiagonals = invertMaze(nodeRefGrid);
+  visitedNodeRefDiagonals = invertMaze(nodeRefGrid);
   await iterateMaze(0, visitedNodeRefDiagonals);
 }
 
@@ -50,9 +50,55 @@ function invertMaze(nodeRefGrid) {
   return visitedNodeRefDiagonals;
 }
 
+// function spiralOrder(nodeRefGrid) {
+//   var rows = nodeRefGrid.length;
+//   var cols = nodeRefGrid[0].length;
+//   var seen = new Array(rows);
+//   for (let i = 0; i < rows; i++) {
+//     seen[i] = new Array(cols);
+//     for (let j = 0; j < cols; j++) {
+//       seen[i][j] = false;
+//     }
+//   }
+
+//   let dr = [0, 1, 0, -1];
+//   let dc = [1, 0, -1, 0];
+//   let row = 0;
+//   let col = 0;
+//   let di = 0;
+
+//   var visitedNodeRefDiagonals = [];
+//   var visitedNodeRefDiagonal = [];
+
+//   for (let i = 0; i < rows * cols; i++) {
+//     if (nodeRefGrid[row][col].current.isVisited) {
+//       nodeRefGrid[row][col].current.isVisited = false;
+//     } else {
+//       visitedNodeRefDiagonal.push(nodeRefGrid[row][col]);
+//     }
+//     seen[row][col] = true;
+//     let cr = row + dr[di];
+//     let cc = col + dc[di];
+
+//     if (0 <= cr && cr < rows && 0 <= cc && cc < cols && !seen[cr][cc]) {
+//       row = cr;
+//       col = cc;
+//     } else {
+//       di = (di + 1) % 4;
+//       row += dr[di];
+//       col += dc[di];
+//       visitedNodeRefDiagonals.push(visitedNodeRefDiagonal);
+//       visitedNodeRefDiagonal = [];
+//     }
+//   }
+//   return visitedNodeRefDiagonals.reverse();
+// }
+
 export function primsMaze(nodeRefGrid) {
   var randomMazeStartNodeRef =
-    nodeRefGrid[getRandIndex(nodeRefGrid)][getRandIndex(nodeRefGrid[0])];
+    nodeRefGrid[Math.floor(getRandIndex(nodeRefGrid) / 2) * 2][
+      getRandIndex(nodeRefGrid[0])
+    ];
   randomMazeStartNodeRef.current.isVisiting = true;
   var visitingNodeRefs = [randomMazeStartNodeRef];
 
@@ -65,14 +111,14 @@ export function primsMaze(nodeRefGrid) {
     )[0];
     visitingNodeRef.current.isVisiting = false;
 
-    var connectedNodeRefs;
-    var unconnectedNodeRefs;
-    [connectedNodeRefs, unconnectedNodeRefs] = getMazeNodeRefChildren(
-      visitingNodeRef,
-      nodeRefGrid
-    );
-
     if (!visitingNodeRef.current.isVisited) {
+      var connectedNodeRefs;
+      var unconnectedNodeRefs;
+      [connectedNodeRefs, unconnectedNodeRefs] = getMazeNodeRefChildren(
+        visitingNodeRef,
+        nodeRefGrid
+      );
+
       if (connectedNodeRefs.length > 0) {
         var randomConnectedNodeRef =
           connectedNodeRefs[getRandIndex(connectedNodeRefs)];
@@ -86,11 +132,11 @@ export function primsMaze(nodeRefGrid) {
         visitingNodeRef.current.isVisited = true;
         visitedNodeRefs.push(visitingNodeRef);
       }
-    }
-    for (const nodeRef of unconnectedNodeRefs) {
-      if (!nodeRef.current.isVisiting) {
-        nodeRef.current.isVisiting = true;
-        visitingNodeRefs.push(nodeRef);
+      for (const nodeRef of unconnectedNodeRefs) {
+        if (!nodeRef.current.isVisiting) {
+          nodeRef.current.isVisiting = true;
+          visitingNodeRefs.push(nodeRef);
+        }
       }
     }
   }

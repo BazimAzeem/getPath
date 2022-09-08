@@ -36,8 +36,8 @@ function getNodeGridDimensions() {
   let screenWidth = window.screen.availWidth;
   let screenHeight = window.screen.availHeight;
 
-  let rows = parseInt(screenHeight / nodeWidth + 5);
-  let cols = parseInt(screenWidth / nodeWidth + 2);
+  let rows = parseInt(screenHeight / nodeWidth + 1);
+  let cols = parseInt(screenWidth / nodeWidth);
 
   return [rows, cols];
 }
@@ -97,16 +97,8 @@ function getNode(row, col, rows, cols, nodeRef) {
 var searchTimeDelay = 20;
 var pathTimeDelay = 40;
 
-export async function visualizeSearch(searchAlgorithm) {
-  var startTime = performance.now();
-
-  var visitedNodeRefs = searchAlgorithm(nodeRefGrid);
-  var endTime = performance.now();
-
-  console.log(`${endTime - startTime} ms`);
-
+export async function visualizeSearch(visitedNodeRefs) {
   await iterateSearch(0, visitedNodeRefs);
-  return visitedNodeRefs[visitedNodeRefs.length - 1];
 }
 
 function iterateSearch(i, visitedNodeRefs) {
@@ -122,17 +114,8 @@ function iterateSearch(i, visitedNodeRefs) {
   });
 }
 
-export async function visualizePath(targetNodeRef) {
+export async function visualizePath(pathNodeRefs) {
   if (!isVisualizing) return;
-  var pathNodeRefs = [];
-  var currentNodeRef = targetNodeRef;
-  while (!currentNodeRef.current.state.isStart) {
-    pathNodeRefs.push(currentNodeRef);
-    currentNodeRef = currentNodeRef.current.predecessor;
-  }
-  pathNodeRefs.push(currentNodeRef);
-  pathNodeRefs.reverse();
-
   await iteratePath(0, pathNodeRefs);
   return;
 }
@@ -179,15 +162,13 @@ export function resetStartAndTargetNodes() {
 
   for (const nodeRefArray of nodeRefGrid) {
     for (const nodeRef of nodeRefArray) {
-      {
-        var row = nodeRef.current.props.row;
-        var col = nodeRef.current.props.col;
+      var row = nodeRef.current.props.row;
+      var col = nodeRef.current.props.col;
 
-        let isStart = row === startRow && col === startCol;
-        let isTarget = row === targetRow && col === targetCol;
+      let isStart = row === startRow && col === startCol;
+      let isTarget = row === targetRow && col === targetCol;
 
-        nodeRef.current.setState({ isStart: isStart, isTarget: isTarget });
-      }
+      nodeRef.current.setState({ isStart: isStart, isTarget: isTarget });
     }
   }
 }

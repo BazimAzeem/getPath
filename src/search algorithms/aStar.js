@@ -18,13 +18,13 @@ export function aStar(nodeRefGrid) {
   while (pq.nodeRefs.length > 0) {
     var minNodeRef = pq.extractMinNodeRef();
     minNodeRef.current.isVisited = true;
+
+    if (minNodeRef.current.distance === Infinity)
+      return [visitedNodeRefs, null];
     visitedNodeRefs.push(minNodeRef);
 
-    if (
-      minNodeRef.current.state.isTarget ||
-      minNodeRef.current.distance === Infinity
-    )
-      return visitedNodeRefs;
+    if (minNodeRef.current.state.isTarget)
+      return [visitedNodeRefs, getPathNodeRefs(minNodeRef)];
 
     var minNodeRefChildren = getNodeRefChildren(minNodeRef, nodeRefGrid);
     for (const minNodeRefChild of minNodeRefChildren) {
@@ -43,10 +43,40 @@ export function aStar(nodeRefGrid) {
     pq.updatePriorityQueue();
   }
 
-  return visitedNodeRefs;
+  return [visitedNodeRefs, null];
 }
 
 export default aStar;
+
+function getPathNodeRefs(targetNodeRef) {
+  if (!targetNodeRef.current.predecessor) return null;
+
+  var pathNodeRefs = [];
+  var currentNodeRef = targetNodeRef;
+  while (!currentNodeRef.current.state.isStart) {
+    pathNodeRefs.push(currentNodeRef);
+    currentNodeRef = currentNodeRef.current.predecessor;
+  }
+  pathNodeRefs.push(currentNodeRef);
+  pathNodeRefs.reverse();
+
+  return pathNodeRefs;
+}
+
+function fillHeuristic(targetNodeRef, nodeRefGrid) {
+  var targetRow = targetNodeRef.current.props.row;
+  var targetCol = targetNodeRef.current.props.col;
+
+  for (const nodeRefArray of nodeRefGrid) {
+    for (const nodeRef of nodeRefArray) {
+      var curRow = nodeRef.current.props.row;
+      var curCol = nodeRef.current.props.col;
+
+      nodeRef.current.heuristic =
+        Math.sqrt((curRow - targetRow) ** 2 + (curCol - targetCol) ** 2) * 2.5;
+    }
+  }
+}
 
 class PriorityQueue {
   constructor(nodeRefGrid) {
@@ -65,21 +95,6 @@ class PriorityQueue {
   printPriorityQueue() {
     for (const nodeRef of this.nodeRefs) {
       printNodeRef(nodeRef);
-    }
-  }
-}
-
-function fillHeuristic(targetNodeRef, nodeRefGrid) {
-  var targetRow = targetNodeRef.current.props.row;
-  var targetCol = targetNodeRef.current.props.col;
-
-  for (const nodeRefArray of nodeRefGrid) {
-    for (const nodeRef of nodeRefArray) {
-      var curRow = nodeRef.current.props.row;
-      var curCol = nodeRef.current.props.col;
-
-      nodeRef.current.heuristic =
-        Math.sqrt((curRow - targetRow) ** 2 + (curCol - targetCol) ** 2) * 2.5;
     }
   }
 }

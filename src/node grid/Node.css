@@ -67,9 +67,7 @@
 }
 
 .node-is-wall {
-  animation-name: isWallNodeAnimation;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;
+  animation: isWallNodeAnimation 0.5s forwards !important;
 }
 
 @keyframes isWallNodeAnimation {
@@ -125,13 +123,20 @@
 }
 
 .node-is-visited {
-  animation: isVisitedNodeAnimation 1.5s forwards;
+  background-color: var(--primary-accent-color);
+}
+
+.node-is-visited-animation {
+  animation: isVisitedNodeAnimation 1.5s;
 }
 
 @keyframes isVisitedNodeAnimation {
+  0% {
+    background-color: var(--primary-color);
+  }
   25% {
     transform: scale(0);
-    background-color: initial;
+    background-color: var(--primary-color);
     border-radius: 100%;
   }
   50% {
@@ -148,11 +153,21 @@
 }
 
 .node-is-path {
-  animation: isPathNodeAnimation 1.5s forwards,
-    oscillatePathNodeAnimation 3s 3s infinite;
+  transform: scale(1.0625);
+  background-color: var(--tertiary-accent-color);
+  color: var(--path-font-color);
+  animation: oscillatePathNodeAnimation 3s infinite;
+}
+
+.node-is-path-animation {
+  animation: isPathNodeAnimation 1.5s, oscillatePathNodeAnimation 3s 3s infinite;
 }
 
 @keyframes isPathNodeAnimation {
+  0% {
+    background-color: var(--primary-accent-color);
+    color: var(--start-and-target-font-color);
+  }
   25% {
     transform: scale(0);
     background-color: var(--primary-accent-color);

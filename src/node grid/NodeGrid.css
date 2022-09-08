@@ -6,12 +6,16 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  margin-top: calc((var(--hexagon-height) + var(--hexagon-spacing)));
+  overflow: hidden;
 }
 
 .node-grid {
   font-size: 0;
   background-color: var(--secondary-color);
   overflow: hidden;
+  margin-left: calc(-1 * (var(--hexagon-width) / 2 + var(--hexagon-spacing)));
+  margin-top: calc(-1 * (var(--hexagon-width) / 2 + var(--hexagon-spacing)));
 }
 
 .node-grid::before {

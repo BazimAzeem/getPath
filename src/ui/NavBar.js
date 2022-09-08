@@ -16,15 +16,19 @@ import {
   clearWallsAndWeights,
   clearSearchAndPath,
   resetStartAndTargetNodes,
+  nodeRefGrid,
 } from "../node grid/NodeGrid";
 import Node from "../node grid/Node";
 import { visualizeMaze, primsMaze } from "../other/primsMaze";
-import { dijkstra } from "../search algorithms/dijkstra";
-import { aStar } from "../search algorithms/aStar";
+import dijkstra from "../search algorithms/dijkstra";
+import aStar from "../search algorithms/aStar";
+import greedyBFS from "../search algorithms/greedyBFS";
+import { biDijktras } from "../search algorithms/biDijkstras";
 import "./NavBar.css";
 
 // Global
 export var isVisualizing = false;
+export var hasVisualizedSearch = false;
 export var makeWall = true;
 export var makeSmallWeight = false;
 export var makeMediumWeight = false;
@@ -42,6 +46,14 @@ class UI extends React.Component {
         name: "A*",
         function: aStar,
       },
+      {
+        name: "Greedy BFS",
+        function: greedyBFS,
+      },
+      {
+        name: "Bidirectional Dijkstra's",
+        function: biDijktras,
+      },
     ];
 
     this.state = {
@@ -53,7 +65,7 @@ class UI extends React.Component {
       isDesktop: false,
     };
 
-    this.updatePredicate = this.updatePredicate.bind(this);
+    this.toggleIsDesktop = this.toggleIsDesktop.bind(this);
 
     this.isVisualizingSearch = false;
     this.isVisualizingMaze = false;
@@ -89,15 +101,15 @@ class UI extends React.Component {
   }
 
   componentDidMount() {
-    this.updatePredicate();
-    window.addEventListener("resize", this.updatePredicate);
+    this.toggleIsDesktop();
+    window.addEventListener("resize", this.toggleIsDesktop);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updatePredicate);
+    window.removeEventListener("resize", this.toggleIsDesktop);
   }
 
-  updatePredicate() {
+  toggleIsDesktop() {
     this.setState({ isDesktop: window.innerWidth >= 768 });
   }
 
@@ -239,21 +251,24 @@ class UI extends React.Component {
             id="visualize-button"
             disabled={isVisualizing && !this.isVisualizingSearch}
             onClick={async () => {
+              hasVisualizedSearch = false;
               this.setState({ showCollapsed: false });
               if (!this.state.isVisualizing) {
                 this.setVisualizing();
                 this.isVisualizingSearch = true;
                 clearSearchAndPath();
-                var targetNodeRef = await visualizeSearch(
-                  this.state.chosenAlgorithm.function
-                );
-                if (targetNodeRef.current.predecessor) {
-                  console.log(targetNodeRef);
-                  await visualizePath(targetNodeRef);
-                } else {
+                var [visitedNodeRefs, pathNodeRefs] =
+                  this.state.chosenAlgorithm.function(nodeRefGrid);
+                await visualizeSearch(visitedNodeRefs);
+                if (pathNodeRefs) {
+                  await visualizePath(pathNodeRefs);
+                } else if (this.isVisualizingSearch) {
                   this.setState({ showNoPathError: true });
                 }
-                this.resetVisualizing();
+                if (isVisualizing) hasVisualizedSearch = true;
+                setTimeout(() => {
+                  this.resetVisualizing();
+                }, 5);
                 this.isVisualizingSearch = false;
               } else {
                 this.resetVisualizing();
@@ -261,10 +276,11 @@ class UI extends React.Component {
                 setTimeout(() => {
                   clearSearchAndPath();
                 }, 20);
+                hasVisualizedSearch = false;
               }
             }}
           >
-            {!this.isVisualizingSearch ? "Search" : "Cancel"}
+            {!this.isVisualizingSearch ? "getPath" : "CANCEL"}
           </Nav.Link>
           <div className="nav-right">
             {this.state.isDesktop ? (
@@ -276,6 +292,7 @@ class UI extends React.Component {
                     clearSearchAndPath();
                     clearWallsAndWeights();
                     resetStartAndTargetNodes();
+                    hasVisualizedSearch = false;
                   }}
                 >
                   All
@@ -285,6 +302,7 @@ class UI extends React.Component {
                   disabled={isVisualizing}
                   onClick={() => {
                     clearSearchAndPath();
+                    hasVisualizedSearch = false;
                   }}
                 >
                   Search & Path
@@ -311,10 +329,19 @@ class UI extends React.Component {
           centered
           fullscreen="sm-down"
         >
-          <Modal.Header closeButton>
-            <Modal.Title>No path has been found</Modal.Title>
+          <Modal.Header>
+            <Modal.Title>NO PATH HAS BEEN FOUND!</Modal.Title>
+            <Nav.Link
+              as="button"
+              onClick={() => this.setState({ showNoPathError: false })}
+            >
+              <span className="material-symbols-outlined">close</span>
+            </Nav.Link>
           </Modal.Header>
-          <Modal.Body></Modal.Body>
+          <Modal.Body>
+            This could be because the start or target node is surrounded by
+            walls.
+          </Modal.Body>
         </Modal>
       </>
     );
