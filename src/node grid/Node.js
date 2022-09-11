@@ -273,7 +273,7 @@ class Node extends React.Component {
         onMouseLeave={this.handleMouseLeave}
         onMouseUp={this.handleMouseUp}
         onClick={() => {
-          console.log(this.state, this.weight);
+          console.log(this.state, this.props);
         }}
       >
         {this.state.isStart ? (

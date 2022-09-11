@@ -17,7 +17,6 @@
 .modal-title {
   text-transform: none;
   padding: 0;
-  margin: 0;
   margin: 1rem;
   color: var(--secondary-accent-color);
 }
@@ -33,6 +32,7 @@
   margin: 1rem;
   margin-top: 0;
   color: var(--modal-body-font-color);
+  min-height: 20rem;
 }
 
 .modal-button {
@@ -64,6 +64,7 @@
 
 .intro-page-number {
   margin: 1rem;
+  margin-left: 0;
   font-size: 1rem;
 }
 
@@ -79,6 +80,30 @@
 
 .inline-node {
   transform: scale(0.8);
+  margin: -0.42rem 0.2rem -0.2rem 0.1rem;
+  vertical-align: middle;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
   margin: 0;
-  /* vertical-align: middle; */
+  margin-top: -1.75rem;
+}
+
+.contact-links * {
+  float: left;
+  margin: 0;
+}
+
+.contact-link {
+  padding: 0;
+  margin: 0 0.5rem;
+}
+
+ion-icon {
+  font-size: 1.5rem;
+  line-height: 0;
+  pointer-events: none;
 }

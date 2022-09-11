@@ -121,3 +121,7 @@ button {
   display: inline-block;
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 }
+
+.no-path-error-modal-body {
+  min-height: max-content !important;
+}

@@ -19,11 +19,17 @@ import {
   nodeRefGrid,
 } from "../node grid/NodeGrid";
 import Node from "../node grid/Node";
-import { visualizeMaze, primsMaze } from "../other/primsMaze";
-import dijkstra from "../search algorithms/dijkstra";
+import { visualizeMaze, primsMaze } from "../mazes/primsMaze";
+import {
+  visualizeRandomWallMaze,
+  randomWallMaze,
+  visualizeRandomWeightsMaze,
+  randomWeightsMaze,
+} from "../mazes/randomMazes";
+import dijkstras from "../search algorithms/dijkstras";
 import aStar from "../search algorithms/aStar";
 import greedyBFS from "../search algorithms/greedyBFS";
-import { biDijktras } from "../search algorithms/biDijkstras";
+import biDijkstras from "../search algorithms/biDijkstras";
 import "./NavBar.css";
 
 // Global
@@ -39,20 +45,20 @@ class UI extends React.Component {
     super(props);
     this.algorithms = [
       {
-        name: "Dijkstra's",
-        function: dijkstra,
+        name: "Dijkstra's Algorithm",
+        function: dijkstras,
       },
       {
-        name: "A*",
+        name: "A* Algorithm",
         function: aStar,
       },
       {
-        name: "Greedy BFS",
+        name: "Greedy Best First Search",
         function: greedyBFS,
       },
       {
-        name: "Bidirectional Dijkstra's",
-        function: biDijktras,
+        name: "Bidirectional dijkstras's",
+        function: biDijkstras,
       },
     ];
 
@@ -110,13 +116,13 @@ class UI extends React.Component {
   }
 
   toggleIsDesktop() {
-    this.setState({ isDesktop: window.innerWidth >= 768 });
+    this.setState({ isDesktop: window.innerWidth >= 992 });
   }
 
   render() {
     return (
       <>
-        <Navbar expand="md" expanded={this.state.showCollapsed}>
+        <Navbar expand="lg" expanded={this.state.showCollapsed}>
           <div className="nav-left">
             <Navbar.Toggle
               onClick={() =>
@@ -156,22 +162,56 @@ class UI extends React.Component {
                       </NavDropdown.Item>
                     ))}
                   </NavDropdown>
-                  <Nav.Link
-                    as="button"
-                    disabled={isVisualizing}
-                    onClick={async () => {
-                      this.setState({ showCollapsed: false });
-                      this.setVisualizing();
-                      this.isVisualizingMaze = true;
-                      clearSearchAndPath();
-                      clearWallsAndWeights();
-                      await visualizeMaze(primsMaze);
-                      this.resetVisualizing();
-                      this.isVisualizingMaze = false;
-                    }}
-                  >
-                    Maze
-                  </Nav.Link>
+                  <NavDropdown title="Mazes">
+                    <NavDropdown.Item
+                      as="button"
+                      disabled={isVisualizing}
+                      onClick={async () => {
+                        this.setState({ showCollapsed: false });
+                        this.setVisualizing();
+                        this.isVisualizingMaze = true;
+                        clearSearchAndPath();
+                        clearWallsAndWeights();
+                        await visualizeMaze(primsMaze);
+                        this.resetVisualizing();
+                        this.isVisualizingMaze = false;
+                      }}
+                    >
+                      Labyrinth
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      as="button"
+                      disabled={isVisualizing}
+                      onClick={async () => {
+                        this.setState({ showCollapsed: false });
+                        this.setVisualizing();
+                        this.isVisualizingMaze = true;
+                        clearSearchAndPath();
+                        clearWallsAndWeights();
+                        await visualizeRandomWallMaze(randomWallMaze);
+                        this.resetVisualizing();
+                        this.isVisualizingMaze = false;
+                      }}
+                    >
+                      Randomized Walls
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      as="button"
+                      disabled={isVisualizing}
+                      onClick={async () => {
+                        this.setState({ showCollapsed: false });
+                        this.setVisualizing();
+                        this.isVisualizingMaze = true;
+                        clearSearchAndPath();
+                        clearWallsAndWeights();
+                        await visualizeRandomWeightsMaze(randomWeightsMaze);
+                        this.resetVisualizing();
+                        this.isVisualizingMaze = false;
+                      }}
+                    >
+                      Randomized Weights
+                    </NavDropdown.Item>
+                  </NavDropdown>
                   {!this.state.isDesktop ? (
                     <NavDropdown title="Clear">
                       <NavDropdown.Item
@@ -324,10 +364,10 @@ class UI extends React.Component {
           </div>
         </Navbar>
         <Modal
+          className="no-path-error-modal"
           show={this.state.showNoPathError}
           onHide={() => this.setState({ showNoPathError: false })}
           centered
-          fullscreen="sm-down"
         >
           <Modal.Header>
             <Modal.Title>NO PATH HAS BEEN FOUND!</Modal.Title>
@@ -338,7 +378,7 @@ class UI extends React.Component {
               <span className="material-symbols-outlined">close</span>
             </Nav.Link>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="no-path-error-modal-body">
             This could be because the start or target node is surrounded by
             walls.
           </Modal.Body>

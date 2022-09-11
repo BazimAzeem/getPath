@@ -27,18 +27,3 @@
   opacity: 0.375;
   font-size: 0.75rem;
 }
-
-.contact-links {
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.contact-links * {
-  float: left;
-}
-
-ion-icon {
-  font-size: 1.5rem;
-  pointer-events: none;
-}
