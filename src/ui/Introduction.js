@@ -8,7 +8,7 @@ class Introduction extends React.Component {
     super(props);
     this.state = {
       showIntro: true,
-      curIntroPageIndex: 7,
+      curIntroPageIndex: 0,
     };
     this.introPages = [
       {
@@ -313,7 +313,7 @@ class Introduction extends React.Component {
           ) : (
             <></>
           )}
-          {this.state.curIntroPageIndex == this.introPages.length - 1 ? (
+          {this.state.curIntroPageIndex === this.introPages.length - 1 ? (
             <div className="contact-links">
               <Nav.Link
                 className="contact-link"
